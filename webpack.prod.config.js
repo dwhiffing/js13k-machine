@@ -11,6 +11,7 @@ module.exports = {
     new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
     new HtmlWebpackPlugin({
       title: 'Production',
+      template: 'index.html',
       inlineSource: '.(js|css)$',
     }),
     new HtmlWebpackInlineSourcePlugin(HtmlWebpackPlugin),
