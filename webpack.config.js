@@ -16,6 +16,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: 'Development',
       template: 'index.html',
+      inlineSource: '.(js|css)$',
     }),
   ],
   output: {

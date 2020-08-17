@@ -1,5 +1,4 @@
-import kontra from 'kontra'
-let { init, Sprite, GameLoop } = kontra
+import { init, Sprite, GameLoop } from 'kontra'
 
 let { canvas } = init()
 

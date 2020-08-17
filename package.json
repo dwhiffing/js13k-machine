@@ -5,6 +5,7 @@
   "scripts": {
     "start": "webpack-dev-server --open",
     "build": "webpack --config webpack.prod.config.js",
+    "postbuild": "node postbuild.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -13,7 +14,9 @@
     "kontra": "^7.0.0"
   },
   "devDependencies": {
+    "archiver": "^5.0.0",
     "clean-webpack-plugin": "^3.0.0",
+    "html-webpack-inline-source-plugin": "1.0.0-beta.2",
     "html-webpack-plugin": "^4.3.0",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12",
