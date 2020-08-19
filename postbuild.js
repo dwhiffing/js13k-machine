@@ -1,10 +1,19 @@
 const fs = require('fs')
 const archiver = require('archiver')
+const minify = require('html-minifier').minify
 
+fs.unlinkSync('./dist/bundle.js')
 let output = fs.createWriteStream('./build.zip')
 let archive = archiver('zip', {
   zlib: { level: 9 },
 })
+
+const content = fs.readFileSync('./dist/index.html')
+const minified = minify(content.toString(), {
+  collapseWhitespace: true,
+  minifyCSS: true,
+})
+fs.writeFileSync('./dist/index.html', minified)
 
 const MAX = 13 * 1024 // 13kb
 
@@ -34,6 +43,5 @@ archive.pipe(output)
 archive.append(fs.createReadStream('./dist/index.html'), {
   name: 'index.html',
 })
-fs.unlinkSync('./dist/main.js')
 
 archive.finalize()
