@@ -3,6 +3,7 @@ import commonjs from '@rollup/plugin-commonjs'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 import html from 'rollup-plugin-html-bundle'
 import serve from 'rollup-plugin-serve'
+import livereload from 'rollup-plugin-livereload'
 
 export default {
   input: 'src/index.js',
@@ -20,5 +21,6 @@ export default {
       inline: true,
     }),
     serve('dist'),
+    livereload('dist'),
   ],
 }
