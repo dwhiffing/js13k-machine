@@ -15,7 +15,6 @@ export const createDotMatrix = (x, y, width, height, resolution = 10) => {
       color: '#0f0',
     },
     updateValue: function (key, value) {
-      // TODO: needs to be active dot instead of hardcoded 0
       const max =
         key === 'x' ? width - this.resolution : height - this.resolution
       this.activeDot[key] = Math.floor(value).clamp(0, max / this.resolution)
