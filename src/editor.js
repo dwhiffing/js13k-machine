@@ -1,21 +1,32 @@
+import createKnob from './knob'
+
 const createLevelEditorSystem = (space, x, y) => {
   const keydownListener = (e) => {
     if (e.key === '1') {
-      // create knob
-      // space.addEntity(knob)
+      const knob = createKnob('knob-3', 0, 0, 50)
+      knob.draggable = true
+      knob.pointerDown = true
+      space.addEntity(knob)
     }
     if (e.key === 'F2') {
-      // output level/connection data
-      // console.log(JSON.stringify(level))
+      const components = space.entities.map((e) => {
+        if (e.key.match(/knob/)) {
+          return [e.key, e.x, e.y, e.size]
+        }
+        if (e.key.match(/screen/)) {
+          return [e.key, e.x, e.y, e.width, e.height]
+        }
+      })
+      console.log(
+        JSON.stringify({ components, connections: space.connections }),
+      )
     }
   }
 
   window.addEventListener('keydown', keydownListener)
 
   return {
-    addEntity: (entity) => {
-      // make components draggable when added
-    },
+    addEntity: (entity) => {},
     update: (time) => {},
     render: (time) => {},
     shutdown: () => {

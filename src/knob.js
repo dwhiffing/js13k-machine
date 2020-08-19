@@ -1,21 +1,25 @@
 import { Sprite } from 'kontra'
 
+// TODO: make component class to hold drag and connection logic
 const arrowWidth = 0.2
 const createKnob = (key, x, y, size) => {
   return Sprite({
     key,
     x,
     y,
+    size,
     width: size * 2,
     height: size * 2,
     angle: 0,
     connections: [],
     onMove: function (event) {
-      if (this.pointerDown) {
+      if (!this.pointerDown) return
+
+      if (this.draggable) {
+        this.x = event.offsetX - size
+        this.y = event.offsetY - size
+      } else {
         this.angle = this.lastAngle + (event.screenX - this.lastX) / 20
-        this.connections.forEach(({ component, key }) =>
-          component.updateValue(key, this.angle),
-        )
       }
     },
     onUp: function (event) {
@@ -27,12 +31,9 @@ const createKnob = (key, x, y, size) => {
       this.lastY = event.screenY
       this.lastAngle = this.angle
     },
-    addConnection: function (component, key) {
-      this.connections.push({ component, key })
-    },
     render: function () {
-      this.context.strokeStyle = 'white'
-      this.context.fillStyle = 'white'
+      this.context.strokeStyle = this.draggable ? 'gray' : 'white'
+      this.context.fillStyle = this.draggable ? 'gray' : 'white'
       this.context.lineWidth = size / 20
       this.context.translate(size, size)
       this.context.rotate(this.angle)

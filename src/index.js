@@ -3,23 +3,44 @@ import createSpace from './space'
 import createKnob from './knob'
 import createDotMatrix from './dotMatrix'
 import createComponentSystem from './components'
-import data from './levels'
-// import createLevelEditorSystem from './editor'
+import LEVELS from './levels'
+import createLevelEditorSystem from './editor'
 import './utils'
 
 const startGame = () => {
   const { canvas } = init()
   initPointer()
 
-  const space = createSpace()
+  let levelIndex = 0
+  let level
 
-  const componentSystem = createComponentSystem(canvas, data)
+  const startNextLevel = () => {
+    level && level.shutdown()
+    level = createLevel(levelIndex, canvas, startNextLevel)
+    levelIndex++
+  }
+
+  startNextLevel()
+
+  GameLoop({
+    update: () => level && level.space.update(),
+    render: () => level && level.space.render(),
+  }).start()
+}
+
+const createLevel = (index = 0, canvas, onWin) => {
+  const levelData = LEVELS[index]
+
+  const space = createSpace()
+  space.connections = levelData.connections
+
+  const componentSystem = createComponentSystem(canvas, levelData, onWin)
   space.registerSystem(componentSystem)
 
-  // const levelEditorSystem = createLevelEditorSystem(space)
-  // space.registerSystem(levelEditorSystem)
+  const levelEditorSystem = createLevelEditorSystem(space)
+  space.registerSystem(levelEditorSystem)
 
-  data.components.forEach(([type, ...rest]) => {
+  levelData.components.forEach(([type, ...rest]) => {
     if (type.match(/knob/)) {
       space.addEntity(createKnob(type, ...rest))
     }
@@ -28,16 +49,10 @@ const startGame = () => {
     }
   })
 
-  Object.entries(data.connections).forEach(([key, value]) => {
-    const connector = componentSystem.components.find((c) => c.key === key)
-    const target = componentSystem.components.find((c) => c.key === value[0])
-    connector.addConnection(target, value[1])
-  })
-
-  GameLoop({
-    update: () => space.update(),
-    render: () => space.render(),
-  }).start()
+  return {
+    space,
+    shutdown: () => space.shutdown(),
+  }
 }
 
 startGame()
