@@ -1,8 +1,9 @@
 import { Sprite } from 'kontra'
 
 const arrowWidth = 0.2
-export const createKnob = (x, y, size, connections) => {
+const createKnob = (key, x, y, size) => {
   return Sprite({
+    key,
     x,
     y,
     width: size * 2,
@@ -12,7 +13,7 @@ export const createKnob = (x, y, size, connections) => {
     onMove: function (event) {
       if (this.pointerDown) {
         this.angle = this.lastAngle + (event.screenX - this.lastX) / 20
-        connections.forEach(({ component, key }) =>
+        this.connections.forEach(({ component, key }) =>
           component.updateValue(key, this.angle),
         )
       }
@@ -25,6 +26,9 @@ export const createKnob = (x, y, size, connections) => {
       this.lastX = event.screenX
       this.lastY = event.screenY
       this.lastAngle = this.angle
+    },
+    addConnection: function (component, key) {
+      this.connections.push({ component, key })
     },
     render: function () {
       this.context.strokeStyle = 'white'
@@ -47,3 +51,5 @@ export const createKnob = (x, y, size, connections) => {
     },
   })
 }
+
+export default createKnob

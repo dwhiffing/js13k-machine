@@ -1,8 +1,9 @@
 import { Sprite } from 'kontra'
 const LINE_WIDTH = 5
 
-export const createDotMatrix = (x, y, width, height, resolution = 10) => {
+const createDotMatrix = (key, x, y, width, height, resolution = 10) => {
   return Sprite({
+    key,
     x,
     y,
     width,
@@ -47,3 +48,5 @@ export const createDotMatrix = (x, y, width, height, resolution = 10) => {
     },
   })
 }
+
+export default createDotMatrix
