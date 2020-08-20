@@ -1,32 +1,21 @@
-import { Sprite } from 'kontra'
+import createComponent from './component'
 
-// TODO: make component class to hold drag and connection logic
 const arrowWidth = 0.2
-const createKnob = (key, x, y, size) => {
-  return Sprite({
+const createKnob = (key, x, y, width, height) => {
+  return createComponent({
     key,
     x,
     y,
-    size,
-    width: size * 2,
-    height: size * 2,
+    width: width * 2,
+    height: (height || width) * 2,
     angle: 0,
     connections: [],
     onMove: function (event) {
-      if (!this.pointerDown) return
-
-      if (this.draggable) {
-        this.x = event.offsetX - size
-        this.y = event.offsetY - size
-      } else {
-        this.angle = this.lastAngle + (event.screenX - this.lastX) / 10
-      }
-    },
-    onUp: function (event) {
-      this.pointerDown = false
+      console.log(event, this, this.pointerDown, this.draggable)
+      if (!this.pointerDown || this.draggable) return
+      this.angle = this.lastAngle + (event.screenX - this.lastX) / 10
     },
     onDown: function (event) {
-      this.pointerDown = true
       this.lastX = event.screenX
       this.lastY = event.screenY
       this.lastAngle = this.angle
@@ -34,19 +23,19 @@ const createKnob = (key, x, y, size) => {
     render: function () {
       this.context.strokeStyle = this.draggable ? 'gray' : 'white'
       this.context.fillStyle = this.draggable ? 'gray' : 'white'
-      this.context.lineWidth = size / 20
-      this.context.translate(size, size)
+      this.context.lineWidth = width / 20
+      this.context.translate(width, width)
       this.context.rotate(this.angle)
-      this.context.translate(-size, -size)
+      this.context.translate(-width, -width)
 
       this.context.beginPath()
-      this.context.arc(size, size, size, 0, 2 * Math.PI)
+      this.context.arc(width, width, width, 0, 2 * Math.PI)
       this.context.stroke()
 
       this.context.beginPath()
-      this.context.moveTo(size - size * arrowWidth, size * -0.001)
-      this.context.lineTo(size, size * -0.2)
-      this.context.lineTo(size + size * arrowWidth, size * -0.001)
+      this.context.moveTo(width - width * arrowWidth, width * -0.001)
+      this.context.lineTo(width, width * -0.2)
+      this.context.lineTo(width + width * arrowWidth, width * -0.001)
       this.context.closePath()
       this.context.fill()
     },

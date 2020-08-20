@@ -1,7 +1,10 @@
 import createKnob from '../components/knob'
 
 const createLevelEditorSystem = (space, x, y) => {
-  const keydownListener = (e) => {
+  const keydown = (e) => {
+    if (e.key === ' ') {
+      space.entities.forEach((c) => (c.draggable = true))
+    }
     if (e.key === '1') {
       const knob = createKnob('knob-3', 0, 0, 50)
       knob.draggable = true
@@ -23,14 +26,22 @@ const createLevelEditorSystem = (space, x, y) => {
     }
   }
 
-  window.addEventListener('keydown', keydownListener)
+  const keyup = (e) => {
+    if (e.key === ' ') {
+      space.entities.forEach((c) => (c.draggable = false))
+    }
+  }
+
+  document.addEventListener('keydown', keydown)
+  document.addEventListener('keyup', keyup)
 
   return {
     addEntity: (entity) => {},
     update: (time) => {},
     render: (time) => {},
     shutdown: () => {
-      window.removeEventListener('keydown', keydownListener)
+      document.removeEventListener('keydown', keydown)
+      document.removeEventListener('keyup', keyup)
     },
   }
 }

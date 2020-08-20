@@ -1,9 +1,9 @@
-import { Sprite } from 'kontra'
+import createComponent from './component'
 import { clamp, between } from '../utils'
 const LINE_WIDTH = 5
 
 const createDotMatrix = (key, x, y, width, height, resolution = 20) => {
-  return Sprite({
+  return createComponent({
     key,
     x,
     y,
@@ -15,20 +15,6 @@ const createDotMatrix = (key, x, y, width, height, resolution = 20) => {
       x: between(0, width / resolution),
       y: between(0, height / resolution),
       color: '#0f0',
-    },
-    onMove: function (event) {
-      if (!this.pointerDown) return
-
-      if (this.draggable) {
-        this.x = event.offsetX - width / 2
-        this.y = event.offsetY - height / 2
-      }
-    },
-    onUp: function (event) {
-      this.pointerDown = false
-    },
-    onDown: function (event) {
-      this.pointerDown = true
     },
     // TODO: refactor
     updateValue: function (key, value) {

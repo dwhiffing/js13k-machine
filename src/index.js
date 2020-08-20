@@ -19,7 +19,7 @@ const createLevel = (index = 0, canvas, onWin) => {
   const space = createSpace()
   space.connections = levelData.connections
 
-  const componentSystem = createComponentSystem(canvas, levelData, onWin)
+  const componentSystem = createComponentSystem(space, levelData, onWin)
   space.addSystem(componentSystem)
 
   const levelEditorSystem = createLevelEditorSystem(space)
