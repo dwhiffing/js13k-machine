@@ -6,26 +6,30 @@ import createComponentSystem from './systems/components'
 import createLevelEditorSystem from './systems/editor'
 import { LEVELS } from './data'
 import './utils'
+import createConnectionSystem from './systems/connections'
 
-const { canvas } = init()
+// const { canvas } = init()
+init()
 initPointer()
 
 let levelIndex = 0
 let level
 
-const createLevel = (index = 0, canvas, onWin) => {
-  const levelData = LEVELS[index]
+const createLevel = (index = 0, onWin) => {
+  const { connections, components } = LEVELS[index]
 
-  const space = createSpace()
-  space.connections = levelData.connections
+  const space = createSpace(connections)
 
-  const componentSystem = createComponentSystem(space, levelData, onWin)
+  const componentSystem = createComponentSystem(space)
   space.addSystem(componentSystem)
+
+  const connectionSystem = createConnectionSystem(space, onWin)
+  space.addSystem(connectionSystem)
 
   const levelEditorSystem = createLevelEditorSystem(space)
   space.addSystem(levelEditorSystem)
 
-  levelData.components.forEach(([type, ...rest]) => {
+  components.forEach(([type, ...rest]) => {
     if (type.match(/knob/)) {
       space.addEntity(createKnob(type, ...rest))
     }
@@ -42,7 +46,7 @@ const createLevel = (index = 0, canvas, onWin) => {
 
 const startNextLevel = () => {
   level && level.shutdown()
-  level = createLevel(levelIndex, canvas, startNextLevel)
+  level = createLevel(levelIndex, startNextLevel)
   levelIndex++
 }
 

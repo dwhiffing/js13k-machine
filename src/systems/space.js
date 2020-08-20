@@ -1,8 +1,9 @@
-const createSpace = () => {
+const createSpace = (connections) => {
   const systems = []
   const entities = []
 
   return {
+    connections,
     addSystem: (system) => {
       systems.push(system)
     },

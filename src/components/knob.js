@@ -11,7 +11,6 @@ const createKnob = (key, x, y, width, height) => {
     angle: 0,
     connections: [],
     onMove: function (event) {
-      console.log(event, this, this.pointerDown, this.draggable)
       if (!this.pointerDown || this.draggable) return
       this.angle = this.lastAngle + (event.screenX - this.lastX) / 10
     },

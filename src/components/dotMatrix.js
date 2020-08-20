@@ -16,7 +16,6 @@ const createDotMatrix = (key, x, y, width, height, resolution = 20) => {
       y: between(0, height / resolution),
       color: '#0f0',
     },
-    // TODO: refactor
     updateValue: function (key, value) {
       const max =
         key === 'x' ? width - this.resolution : height - this.resolution

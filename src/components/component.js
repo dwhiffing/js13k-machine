@@ -7,6 +7,7 @@ const createComponent = ({
   width,
   height,
   render,
+  updateValue,
   onMove,
   onUp,
   onDown,
@@ -19,6 +20,13 @@ const createComponent = ({
     width,
     height,
     render,
+    updateValue: function (key, value) {
+      if (!updateValue) {
+        this[key] = value
+        return
+      }
+      updateValue.call(this, key, value)
+    },
     ...rest,
     onMove: function (event) {
       onMove && onMove.call(this, event)
@@ -35,7 +43,6 @@ const createComponent = ({
     },
     onDown: function (event) {
       onDown && onDown.call(this, event)
-      console.log(this)
       this.pointerDown = true
     },
   })
