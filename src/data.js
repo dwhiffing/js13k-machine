@@ -1,4 +1,4 @@
-const LEVELS = [
+export const LEVELS = [
   {
     components: [
       ['knob-1', 250, 450, 50],
@@ -17,5 +17,3 @@ const LEVELS = [
     connections: { 'knob-1': ['screen-1', 'x'], 'knob-2': ['screen-1', 'y'] },
   },
 ]
-
-export default LEVELS

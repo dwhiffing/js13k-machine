@@ -1,4 +1,4 @@
-import createKnob from './knob'
+import createKnob from '../components/knob'
 
 const createLevelEditorSystem = (space, x, y) => {
   const keydownListener = (e) => {

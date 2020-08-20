@@ -1,7 +1,8 @@
 import { Sprite } from 'kontra'
+import { clamp, between } from '../utils'
 const LINE_WIDTH = 5
 
-const createDotMatrix = (key, x, y, width, height, resolution = 10) => {
+const createDotMatrix = (key, x, y, width, height, resolution = 20) => {
   return Sprite({
     key,
     x,
@@ -11,8 +12,8 @@ const createDotMatrix = (key, x, y, width, height, resolution = 10) => {
     resolution,
     activeDot: { x: 0, y: 0, color: '#fff' },
     goalDot: {
-      x: Math.between(0, width / resolution),
-      y: Math.between(0, height / resolution),
+      x: between(0, width / resolution),
+      y: between(0, height / resolution),
       color: '#0f0',
     },
     onMove: function (event) {
@@ -33,7 +34,7 @@ const createDotMatrix = (key, x, y, width, height, resolution = 10) => {
     updateValue: function (key, value) {
       const max =
         key === 'x' ? width - this.resolution : height - this.resolution
-      this.activeDot[key] = Math.floor(value).clamp(0, max / this.resolution)
+      this.activeDot[key] = clamp(Math.floor(value), 0, max / this.resolution)
     },
     render: function () {
       this.isValid =

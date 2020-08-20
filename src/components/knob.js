@@ -19,7 +19,7 @@ const createKnob = (key, x, y, size) => {
         this.x = event.offsetX - size
         this.y = event.offsetY - size
       } else {
-        this.angle = this.lastAngle + (event.screenX - this.lastX) / 20
+        this.angle = this.lastAngle + (event.screenX - this.lastX) / 10
       }
     },
     onUp: function (event) {

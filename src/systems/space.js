@@ -3,7 +3,7 @@ const createSpace = () => {
   const entities = []
 
   return {
-    registerSystem: (system) => {
+    addSystem: (system) => {
       systems.push(system)
     },
     addEntity: (entity) => {

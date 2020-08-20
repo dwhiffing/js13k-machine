@@ -1,32 +1,17 @@
 import { init, initPointer, GameLoop } from 'kontra'
-import createSpace from './space'
-import createKnob from './knob'
-import createDotMatrix from './dotMatrix'
-import createComponentSystem from './components'
-import LEVELS from './levels'
-import createLevelEditorSystem from './editor'
+import createKnob from './components/knob'
+import createDotMatrix from './components/dotMatrix'
+import createSpace from './systems/space'
+import createComponentSystem from './systems/components'
+import createLevelEditorSystem from './systems/editor'
+import { LEVELS } from './data'
 import './utils'
 
-const startGame = () => {
-  const { canvas } = init()
-  initPointer()
+const { canvas } = init()
+initPointer()
 
-  let levelIndex = 0
-  let level
-
-  const startNextLevel = () => {
-    level && level.shutdown()
-    level = createLevel(levelIndex, canvas, startNextLevel)
-    levelIndex++
-  }
-
-  startNextLevel()
-
-  GameLoop({
-    update: () => level && level.space.update(),
-    render: () => level && level.space.render(),
-  }).start()
-}
+let levelIndex = 0
+let level
 
 const createLevel = (index = 0, canvas, onWin) => {
   const levelData = LEVELS[index]
@@ -35,10 +20,10 @@ const createLevel = (index = 0, canvas, onWin) => {
   space.connections = levelData.connections
 
   const componentSystem = createComponentSystem(canvas, levelData, onWin)
-  space.registerSystem(componentSystem)
+  space.addSystem(componentSystem)
 
   const levelEditorSystem = createLevelEditorSystem(space)
-  space.registerSystem(levelEditorSystem)
+  space.addSystem(levelEditorSystem)
 
   levelData.components.forEach(([type, ...rest]) => {
     if (type.match(/knob/)) {
@@ -55,4 +40,15 @@ const createLevel = (index = 0, canvas, onWin) => {
   }
 }
 
-startGame()
+const startNextLevel = () => {
+  level && level.shutdown()
+  level = createLevel(levelIndex, canvas, startNextLevel)
+  levelIndex++
+}
+
+startNextLevel()
+
+GameLoop({
+  update: () => level && level.space.update(),
+  render: () => level && level.space.render(),
+}).start()
