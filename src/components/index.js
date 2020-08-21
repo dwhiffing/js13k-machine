@@ -1,6 +1,9 @@
 import { Sprite } from 'kontra'
+export { default as createDotMatrix } from './dotMatrix'
+export { default as createSineWave } from './sineWave'
+export { default as createKnob } from './knob'
 
-const createComponent = ({
+export const createComponent = ({
   key,
   x,
   y,
@@ -47,5 +50,3 @@ const createComponent = ({
     },
   })
 }
-
-export default createComponent

@@ -1,9 +1,9 @@
-import createComponent from './component'
+import { createComponent } from './index'
 import { between } from '../utils'
 import { clamp } from 'kontra'
 const LINE_WIDTH = 5
 
-const createDotMatrix = (key, x, y, width, height, resolution = 20) => {
+const createDotMatrix = ({ key, x, y, width, height, resolution = 40 }) => {
   const getCoords = ({ x, y }) => {
     const maxX = width - resolution
     const maxY = height - resolution
@@ -39,7 +39,6 @@ const createDotMatrix = (key, x, y, width, height, resolution = 20) => {
     render: function () {
       const activeCoords = getCoords(this.activeDot)
       const goalCoords = getCoords(this.goalDot)
-      console.log(activeCoords, goalCoords)
       this.isValid =
         activeCoords.x === goalCoords.x && activeCoords.y === goalCoords.y
 

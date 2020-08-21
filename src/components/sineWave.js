@@ -1,10 +1,11 @@
-import createComponent from './component'
-import { clamp } from 'kontra'
+import { createComponent } from './index'
 import { between } from '../utils'
+
 const DEFAULT_WIDTH = 500
 const DEFAULT_HEIGHT = 300
 const LINE_WIDTH = 5
-const createSineWave = (key, x, y, width, height) => {
+
+const createSineWave = ({ key, x, y, width, height }) => {
   return createComponent({
     key,
     x,

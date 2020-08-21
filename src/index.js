@@ -1,13 +1,11 @@
 import { init, initPointer, GameLoop } from 'kontra'
-import createKnob from './components/knob'
-import createDotMatrix from './components/dotMatrix'
 import createSpace from './systems/space'
 import createComponentSystem from './systems/components'
 import createLevelEditorSystem from './systems/editor'
-import { LEVELS } from './data'
-import './utils'
 import createConnectionSystem from './systems/connections'
-import createSineWave from './components/sineWave'
+import { LEVELS } from './data'
+import { createDotMatrix, createSineWave, createKnob } from './components'
+import './utils'
 
 // const { canvas } = init()
 init()
@@ -15,6 +13,12 @@ initPointer()
 
 let levelIndex = 0
 let level
+
+const componentFactories = {
+  screen: createDotMatrix,
+  sine: createSineWave,
+  knob: createKnob,
+}
 
 const createLevel = (index = 0, onWin) => {
   const { connections, components } = LEVELS[index]
@@ -30,16 +34,9 @@ const createLevel = (index = 0, onWin) => {
   const levelEditorSystem = createLevelEditorSystem(space)
   space.addSystem(levelEditorSystem)
 
-  components.forEach(([type, ...rest]) => {
-    if (type.match(/knob/)) {
-      space.addEntity(createKnob(type, ...rest))
-    }
-    if (type.match(/screen/)) {
-      space.addEntity(createDotMatrix(type, ...rest))
-    }
-    if (type.match(/sine/)) {
-      space.addEntity(createSineWave(type, ...rest))
-    }
+  components.forEach((component) => {
+    const key = component.key.split('-')[0]
+    space.addEntity(componentFactories[key](component))
   })
 
   return {
