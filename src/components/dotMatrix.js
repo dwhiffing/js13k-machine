@@ -1,5 +1,6 @@
 import createComponent from './component'
-import { clamp, between } from '../utils'
+import { between } from '../utils'
+import { clamp } from 'kontra'
 const LINE_WIDTH = 5
 
 const createDotMatrix = (key, x, y, width, height, resolution = 20) => {
@@ -19,16 +20,14 @@ const createDotMatrix = (key, x, y, width, height, resolution = 20) => {
     updateValue: function (key, value) {
       const max =
         key === 'x' ? width - this.resolution : height - this.resolution
-      this.activeDot[key] = clamp(Math.floor(value), 0, max / this.resolution)
+      this.activeDot[key] = clamp(0, max / this.resolution, Math.floor(value))
     },
     render: function () {
       this.isValid =
         this.activeDot.x === this.goalDot.x &&
         this.activeDot.y === this.goalDot.y
       this.context.strokeStyle = this.isValid ? 'green' : 'white'
-      this.context.fillStyle = 'white'
       this.context.lineWidth = LINE_WIDTH
-
       this.context.beginPath()
       this.context.rect(0, 0, width + 9, height + 9)
       this.context.stroke()

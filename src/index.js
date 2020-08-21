@@ -7,6 +7,7 @@ import createLevelEditorSystem from './systems/editor'
 import { LEVELS } from './data'
 import './utils'
 import createConnectionSystem from './systems/connections'
+import createSineWave from './components/sineWave'
 
 // const { canvas } = init()
 init()
@@ -35,6 +36,9 @@ const createLevel = (index = 0, onWin) => {
     }
     if (type.match(/screen/)) {
       space.addEntity(createDotMatrix(type, ...rest))
+    }
+    if (type.match(/sine/)) {
+      space.addEntity(createSineWave(type, ...rest))
     }
   })
 
