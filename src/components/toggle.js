@@ -31,7 +31,7 @@ const createToggle = ({
     },
     onDown: function (event) {
       if (this.draggable) return
-      this.value = this.value ? min : max
+      this.value = this.value ? this.min : this.max
     },
     render: function () {
       this.context.strokeStyle = this.draggable ? 'gray' : 'white'

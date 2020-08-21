@@ -15,6 +15,7 @@ export const LEVELS = [
         key: 'gridScreen-1',
         x: 337,
         y: 80,
+        goal: { x: 58, y: 40 },
         width: 400,
         height: 400,
         resolution: 24,
@@ -48,9 +49,16 @@ export const LEVELS = [
   },
   {
     components: [
-      { key: 'knob-1', x: 250, y: 450 },
-      { key: 'knob-2', x: 450, y: 450 },
-      { key: 'waveScreen-1', x: 100, y: 100, width: 590, height: 300 },
+      { key: 'knob-1', x: 250, y: 450, max: 100 },
+      { key: 'knob-2', x: 450, y: 450, value: 5.48828125, max: 100 },
+      {
+        key: 'waveScreen-1',
+        x: 100,
+        y: 100,
+        goal: { amplitude: 20.07, wavelength: 40.33 },
+        width: 590,
+        height: 300,
+      },
     ],
     connections: [
       'knob-1.value:waveScreen-1.wavelength',

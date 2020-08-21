@@ -3,11 +3,11 @@ import { between } from '../utils'
 import { clamp } from 'kontra'
 const LINE_WIDTH = 5
 
-// TODO: allow setting of active and goal dot via level data
 const createGridScreen = ({
   key,
   x,
   y,
+  goal,
   width = 400,
   height = 400,
   resolution = 40,
@@ -19,10 +19,10 @@ const createGridScreen = ({
     width,
     height,
     resolution,
-    activeDot: { x: 0, y: 0, color: '#fff' },
-    goalDot: {
-      x: between(0, 100),
-      y: between(0, 100),
+    active: { x: 0, y: 0, color: '#fff' },
+    goal: {
+      x: (goal && goal.x) || between(0, 100),
+      y: (goal && goal.y) || between(0, 100),
       color: '#0f0',
     },
     toJSON: function () {
@@ -30,6 +30,7 @@ const createGridScreen = ({
         key: this.key,
         x: Math.floor(this.x),
         y: Math.floor(this.y),
+        goal: { x: this.goal.x, y: this.goal.y },
         width: this.width,
         height: this.height,
         resolution: this.resolution,
@@ -37,14 +38,14 @@ const createGridScreen = ({
     },
     updateValue: function (key, value) {
       if (key === 'x' || key === 'y') {
-        this.activeDot[key] = Math.floor(value)
+        this.active[key] = Math.floor(value)
       } else if (key === 'resolution') {
         this[key] = value
       }
     },
     render: function () {
-      const activeCoords = this.getCoords(this.activeDot)
-      const goalCoords = this.getCoords(this.goalDot)
+      const activeCoords = this.getCoords(this.active)
+      const goalCoords = this.getCoords(this.goal)
       this.isValid =
         activeCoords.x === goalCoords.x && activeCoords.y === goalCoords.y
 
@@ -54,7 +55,7 @@ const createGridScreen = ({
       this.context.rect(0, 0, width + 9, height + 9)
       this.context.stroke()
 
-      const dots = [this.goalDot, this.activeDot]
+      const dots = [this.goal, this.active]
 
       dots.forEach((dot) => {
         const coords = this.getCoords(dot)

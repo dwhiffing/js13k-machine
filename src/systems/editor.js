@@ -13,7 +13,7 @@ const createLevelEditorSystem = (space, x, y) => {
   const gui = new guify({
     barMode: 'none',
     align: 'left',
-    width: 200,
+    width: 300,
     root: document.getElementById('gui'),
   })
   window.debug = true
@@ -71,40 +71,64 @@ const createLevelEditorSystem = (space, x, y) => {
 
   return {
     addEntity: (entity) => {
+      const minMax = ['min', 'max']
+      const coords = ['x', 'y']
+      const screens = ['active', 'goal']
+
       addPanel({
         type: 'folder',
         label: entity.key,
         open: false,
       })
 
-      addPanel({
-        type: 'range',
-        label: 'x',
-        property: 'x',
-        min: 0,
-        max: 1000,
-        folder: entity.key,
-        object: entity,
-      })
-
-      addPanel({
-        type: 'range',
-        label: 'y',
-        property: 'y',
-        min: 0,
-        max: 1000,
-        folder: entity.key,
-        object: entity,
-      })
-
-      entity.value &&
+      coords.forEach((key) => {
+        if (typeof entity[key] !== 'number') return
         addPanel({
-          type: 'display',
-          label: 'value',
-          property: 'value',
+          type: 'range',
+          label: key,
+          property: key,
+          min: 0,
+          max: 1000,
           folder: entity.key,
           object: entity,
         })
+      })
+
+      addPanel({
+        type: 'display',
+        label: 'value',
+        property: 'value',
+        folder: entity.key,
+        object: entity,
+      })
+
+      minMax.forEach((key) => {
+        if (typeof entity[key] !== 'number') return
+        addPanel({
+          type: 'range',
+          label: key,
+          property: key,
+          folder: entity.key,
+          object: entity,
+        })
+      })
+
+      screens.forEach((screenKey) => {
+        if (!entity[screenKey]) return
+        Object.keys(entity[screenKey]).forEach((key) => {
+          addPanel({
+            type: key.match(/^x$|^y$|amplitude|wavelength/)
+              ? 'range'
+              : key.match(/^color$/)
+              ? 'color'
+              : 'display',
+            label: `${screenKey}-${key}`,
+            property: key,
+            folder: entity.key,
+            object: entity[screenKey],
+          })
+        })
+      })
     },
     addConnection: function (connection) {
       const { input, output } = connection
@@ -139,6 +163,7 @@ const createLevelEditorSystem = (space, x, y) => {
     render: (time) => {},
     shutdown: () => {
       components.forEach((c) => gui.Remove(c))
+      document.getElementById('gui').innerHTML = ''
       document.removeEventListener('keydown', keydown)
     },
   }

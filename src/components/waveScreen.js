@@ -5,8 +5,7 @@ const DEFAULT_WIDTH = 500
 const DEFAULT_HEIGHT = 300
 const LINE_WIDTH = 5
 
-// TODO: allow setting of active and goal via level data
-const createWaveScreen = ({ key, x, y, width = 600, height = 300 }) => {
+const createWaveScreen = ({ key, x, y, goal, width = 600, height = 300 }) => {
   return createComponent({
     key,
     x,
@@ -15,8 +14,8 @@ const createWaveScreen = ({ key, x, y, width = 600, height = 300 }) => {
     height,
     active: { wavelength: 9.5, amplitude: 90, color: '#ffffff' },
     goal: {
-      wavelength: between(0, 20) * 5,
-      amplitude: between(0, 20) * 5,
+      wavelength: (goal && goal.wavelength) || between(0, 20) * 5,
+      amplitude: (goal && goal.amplitude) || between(0, 20) * 5,
       color: 'green',
     },
     toJSON: function () {
@@ -24,6 +23,10 @@ const createWaveScreen = ({ key, x, y, width = 600, height = 300 }) => {
         key: this.key,
         x: Math.floor(this.x),
         y: Math.floor(this.y),
+        goal: {
+          amplitude: this.goal.amplitude,
+          wavelength: this.goal.wavelength,
+        },
         width: this.width,
         height: this.height,
       }

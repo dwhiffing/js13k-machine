@@ -36,7 +36,7 @@ const createKnob = ({
     onMove: function (event) {
       if (!this.pointerDown || this.draggable) return
       this.value = this.lastValue + (event.screenX - this.lastX) / 3
-      this.value = clamp(min, max, this.value)
+      this.value = clamp(this.min, this.max, this.value)
       this.angle = clamp(0.3, 6, this.value / 16)
     },
     onDown: function (event) {

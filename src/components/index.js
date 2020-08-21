@@ -15,6 +15,7 @@ export const createComponent = ({
   onMove,
   onUp,
   onDown,
+  value = 0,
   ...rest
 }) => {
   return Sprite({
@@ -23,6 +24,7 @@ export const createComponent = ({
     y,
     width,
     height,
+    value,
     render: function () {
       if (window.debug && this.draggable) {
         this.context.fillStyle = '#fff'
