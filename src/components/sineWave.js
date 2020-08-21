@@ -13,15 +13,17 @@ const createSineWave = (key, x, y, width, height) => {
     height,
     active: { wavelength: 9.5, amplitude: 90, color: '#ffffff' },
     goal: {
-      wavelength: between(5, 15) * 2,
-      amplitude: between(-13, 13) * 10,
+      wavelength: between(0, 20) * 5,
+      amplitude: between(0, 20) * 5,
       color: 'green',
     },
     updateValue: function (key, value) {
-      if (key === 'wavelength')
-        this.active[key] = clamp(10, 40, Math.floor(value) * 2)
-      if (key === 'amplitude')
-        this.active[key] = clamp(-130, 130, Math.floor(value) * 10)
+      if (key === 'wavelength') {
+        this.active[key] = Math.floor(value / 5) * 5
+      }
+      if (key === 'amplitude') {
+        this.active[key] = Math.floor(value / 5) * 5
+      }
     },
     render: function () {
       this.isValid =
@@ -44,14 +46,17 @@ const createSineWave = (key, x, y, width, height) => {
           _y = y + offset
         this.context.moveTo(_x, _y)
 
+        const amplitude = Math.floor((line.amplitude - 50) / 2) * 5
+        const wavelength = Math.floor(line.wavelength / 6 + 3) * 3
+
         var increase =
-          (((90 / y) * Math.PI) / line.wavelength) * (DEFAULT_WIDTH / width)
+          (((90 / y) * Math.PI) / wavelength) * (DEFAULT_WIDTH / width)
         for (i = 0; i <= 0 + width + 5; i = i + 5) {
           _x = i
           _y =
             y +
             offset -
-            Math.sin(counter) * line.amplitude * (height / DEFAULT_HEIGHT)
+            Math.sin(counter) * amplitude * (height / DEFAULT_HEIGHT)
           counter += increase
           this.context.lineTo(_x, _y)
         }

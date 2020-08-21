@@ -4,6 +4,22 @@ import { clamp } from 'kontra'
 const LINE_WIDTH = 5
 
 const createDotMatrix = (key, x, y, width, height, resolution = 20) => {
+  const getCoords = ({ x, y }) => {
+    const maxX = width - resolution
+    const maxY = height - resolution
+    return {
+      x: clamp(
+        0,
+        maxX / resolution,
+        Math.floor(((x / 100) * width) / resolution),
+      ),
+      y: clamp(
+        0,
+        maxY / resolution,
+        Math.floor(((y / 100) * height) / resolution),
+      ),
+    }
+  }
   return createComponent({
     key,
     x,
@@ -13,19 +29,20 @@ const createDotMatrix = (key, x, y, width, height, resolution = 20) => {
     resolution,
     activeDot: { x: 0, y: 0, color: '#fff' },
     goalDot: {
-      x: between(0, width / resolution),
-      y: between(0, height / resolution),
+      x: between(0, 100),
+      y: between(0, 100),
       color: '#0f0',
     },
     updateValue: function (key, value) {
-      const max =
-        key === 'x' ? width - this.resolution : height - this.resolution
-      this.activeDot[key] = clamp(0, max / this.resolution, Math.floor(value))
+      this.activeDot[key] = value
     },
     render: function () {
+      const activeCoords = getCoords(this.activeDot)
+      const goalCoords = getCoords(this.goalDot)
+      console.log(activeCoords, goalCoords)
       this.isValid =
-        this.activeDot.x === this.goalDot.x &&
-        this.activeDot.y === this.goalDot.y
+        activeCoords.x === goalCoords.x && activeCoords.y === goalCoords.y
+
       this.context.strokeStyle = this.isValid ? 'green' : 'white'
       this.context.lineWidth = LINE_WIDTH
       this.context.beginPath()
@@ -35,11 +52,12 @@ const createDotMatrix = (key, x, y, width, height, resolution = 20) => {
       const dots = [this.goalDot, this.activeDot]
 
       dots.forEach((dot) => {
+        const coords = getCoords(dot)
         this.context.beginPath()
         this.context.fillStyle = dot.color
         this.context.rect(
-          dot.x * this.resolution + LINE_WIDTH,
-          dot.y * this.resolution + LINE_WIDTH,
+          coords.x * this.resolution + LINE_WIDTH,
+          coords.y * this.resolution + LINE_WIDTH,
           this.resolution - 2,
           this.resolution - 2,
         )

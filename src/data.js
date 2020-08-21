@@ -7,11 +7,11 @@ export const LEVELS = [
     ],
     connections: [
       {
-        input: { key: 'knob-1', prop: 'angle' },
+        input: { key: 'knob-1', prop: 'value' },
         output: { key: 'sine-1', prop: 'wavelength' },
       },
       {
-        input: { key: 'knob-2', prop: 'angle' },
+        input: { key: 'knob-2', prop: 'value' },
         output: { key: 'sine-1', prop: 'amplitude' },
       },
     ],
@@ -24,11 +24,11 @@ export const LEVELS = [
     ],
     connections: [
       {
-        input: { key: 'knob-1', prop: 'angle' },
+        input: { key: 'knob-1', prop: 'value' },
         output: { key: 'screen-1', prop: 'x' },
       },
       {
-        input: { key: 'knob-2', prop: 'angle' },
+        input: { key: 'knob-2', prop: 'value' },
         output: { key: 'screen-1', prop: 'y' },
       },
     ],
