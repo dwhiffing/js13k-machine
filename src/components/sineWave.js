@@ -5,6 +5,7 @@ const DEFAULT_WIDTH = 500
 const DEFAULT_HEIGHT = 300
 const LINE_WIDTH = 5
 
+// TODO: allow setting of active and goal via level data
 const createSineWave = ({ key, x, y, width, height }) => {
   return createComponent({
     key,
@@ -17,6 +18,15 @@ const createSineWave = ({ key, x, y, width, height }) => {
       wavelength: between(0, 20) * 5,
       amplitude: between(0, 20) * 5,
       color: 'green',
+    },
+    toJSON: function () {
+      return {
+        key: this.key,
+        x: this.x,
+        y: this.y,
+        width: this.width,
+        height: this.height,
+      }
     },
     updateValue: function (key, value) {
       this.active[key] = nearest(value, 5)

@@ -5,6 +5,9 @@ const createConnectionSystem = (space, onWin) => {
         onWin && onWin()
       }
     }
+    if (e.key === 'n') {
+      onWin && onWin()
+    }
   }
   document.addEventListener('keydown', keydown)
   function uniq(value, index, self) {

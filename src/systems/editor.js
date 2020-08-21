@@ -12,14 +12,7 @@ const createLevelEditorSystem = (space, x, y) => {
       space.addEntity(knob)
     }
     if (e.key === 'F2') {
-      const components = space.entities.map((e) => {
-        if (e.key.match(/knob/)) {
-          return [e.key, e.x, e.y, e.size]
-        }
-        if (e.key.match(/screen/)) {
-          return [e.key, e.x, e.y, e.width, e.height]
-        }
-      })
+      const components = space.entities.map((e) => e.toJSON())
       console.log(
         JSON.stringify({ components, connections: space.connections }),
       )

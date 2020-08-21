@@ -23,6 +23,16 @@ const createKnob = ({
     height: (height || width) * 2,
     angle: clamp(0.3, 6, _value / 16),
     value: _value,
+    toJSON: function () {
+      return {
+        key: this.key,
+        x: this.x,
+        y: this.y,
+        value: this.value,
+        min: this.min,
+        max: this.max,
+      }
+    },
     onMove: function (event) {
       if (!this.pointerDown || this.draggable) return
       this.value = this.lastValue + (event.screenX - this.lastX) / 3

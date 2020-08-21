@@ -3,6 +3,7 @@ import { between } from '../utils'
 import { clamp } from 'kontra'
 const LINE_WIDTH = 5
 
+// TODO: allow setting of active and goal dot via level data
 const createDotMatrix = ({ key, x, y, width, height, resolution = 40 }) => {
   const getCoords = ({ x, y }) => {
     const maxX = (width - resolution) / resolution
@@ -24,6 +25,16 @@ const createDotMatrix = ({ key, x, y, width, height, resolution = 40 }) => {
       x: between(0, 100),
       y: between(0, 100),
       color: '#0f0',
+    },
+    toJSON: function () {
+      return {
+        key: this.key,
+        x: this.x,
+        y: this.y,
+        width: this.width,
+        height: this.height,
+        resolution: this.resolution,
+      }
     },
     updateValue: function (key, value) {
       this.activeDot[key] = value

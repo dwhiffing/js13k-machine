@@ -17,6 +17,15 @@ const createToggle = ({
     value,
     width: width * 2,
     height: (height || width) * 2,
+    toJSON: function () {
+      return {
+        key: this.key,
+        x: this.x,
+        y: this.y,
+        min: this.min,
+        max: this.max,
+      }
+    },
     onDown: function (event) {
       this.value = this.value ? min : max
     },

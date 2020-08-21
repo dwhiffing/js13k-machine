@@ -47,6 +47,7 @@ const createLevel = (index = 0, onWin) => {
 }
 
 const startNextLevel = () => {
+  if (levelIndex >= LEVELS.length) return
   level && level.shutdown()
   level = createLevel(levelIndex, startNextLevel)
   levelIndex++
