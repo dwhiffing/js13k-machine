@@ -28,9 +28,9 @@ const createKnob = ({
         key: this.key,
         x: Math.floor(this.x),
         y: Math.floor(this.y),
-        value: this.value,
-        min: this.min,
-        max: this.max,
+        value: this.value ? this.value : undefined,
+        min: this.min ? this.min : undefined,
+        max: this.max ? this.max : undefined,
       }
     },
     onMove: function (event) {

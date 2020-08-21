@@ -9,7 +9,12 @@ import guify from 'guify'
 // once finished, can output updated values to console
 const createLevelEditorSystem = (space, x, y) => {
   let components = []
-  const gui = new guify({ barMode: 'overlay' })
+  const gui = new guify({
+    barMode: 'none',
+    align: 'left',
+    width: 200,
+    root: document.getElementById('gui'),
+  })
   window.debug = true
   const addPanel = (opts) => components.push(gui.Register(opts))
   const keydown = (e) => {
@@ -24,10 +29,6 @@ const createLevelEditorSystem = (space, x, y) => {
     //   space.addEntity(knob)
     // }
     if (e.key === 'F2') {
-      const components = space.entities.map((e) => e.toJSON())
-      console.log(
-        JSON.stringify({ components, connections: space.rawConnections }),
-      )
     }
   }
 
@@ -67,6 +68,18 @@ const createLevelEditorSystem = (space, x, y) => {
       property: 'prop',
     })
   })
+  setTimeout(() => {
+    addPanel({
+      type: 'button',
+      label: 'Copy',
+      action: () => {
+        const components = space.entities.map((e) => e.toJSON())
+        navigator.clipboard.writeText(
+          JSON.stringify({ components, connections: space.rawConnections }),
+        )
+      },
+    })
+  }, 10)
 
   return {
     addEntity: (entity) => {
@@ -98,11 +111,9 @@ const createLevelEditorSystem = (space, x, y) => {
 
       entity.value &&
         addPanel({
-          type: 'range',
+          type: 'display',
           label: 'value',
           property: 'value',
-          min: 0,
-          max: 100,
           folder: entity.key,
           object: entity,
         })
