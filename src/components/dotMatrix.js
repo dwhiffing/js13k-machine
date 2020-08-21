@@ -5,19 +5,11 @@ const LINE_WIDTH = 5
 
 const createDotMatrix = ({ key, x, y, width, height, resolution = 40 }) => {
   const getCoords = ({ x, y }) => {
-    const maxX = width - resolution
-    const maxY = height - resolution
+    const maxX = (width - resolution) / resolution
+    const maxY = (height - resolution) / resolution
     return {
-      x: clamp(
-        0,
-        maxX / resolution,
-        Math.floor(((x / 100) * width) / resolution),
-      ),
-      y: clamp(
-        0,
-        maxY / resolution,
-        Math.floor(((y / 100) * height) / resolution),
-      ),
+      x: clamp(0, maxX, Math.floor(((x / 100) * width) / resolution)),
+      y: clamp(0, maxY, Math.floor(((y / 100) * height) / resolution)),
     }
   }
   return createComponent({

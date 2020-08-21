@@ -4,9 +4,9 @@ import { clamp } from 'kontra'
 const arrowWidth = 0.2
 const createKnob = ({
   key,
-  x,
-  y,
-  width,
+  x = 0,
+  y = 0,
+  width = 50,
   height,
   value = 0,
   min = 0,
@@ -23,7 +23,6 @@ const createKnob = ({
     height: (height || width) * 2,
     angle: clamp(0.3, 6, _value / 16),
     value: _value,
-    connections: [],
     onMove: function (event) {
       if (!this.pointerDown || this.draggable) return
       this.value = this.lastValue + (event.screenX - this.lastX) / 3

@@ -1,5 +1,5 @@
 import { createComponent } from './index'
-import { between } from '../utils'
+import { between, nearest } from '../utils'
 
 const DEFAULT_WIDTH = 500
 const DEFAULT_HEIGHT = 300
@@ -19,12 +19,7 @@ const createSineWave = ({ key, x, y, width, height }) => {
       color: 'green',
     },
     updateValue: function (key, value) {
-      if (key === 'wavelength') {
-        this.active[key] = Math.floor(value / 5) * 5
-      }
-      if (key === 'amplitude') {
-        this.active[key] = Math.floor(value / 5) * 5
-      }
+      this.active[key] = nearest(value, 5)
     },
     render: function () {
       this.isValid =

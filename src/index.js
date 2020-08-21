@@ -4,7 +4,7 @@ import createComponentSystem from './systems/components'
 import createLevelEditorSystem from './systems/editor'
 import createConnectionSystem from './systems/connections'
 import { LEVELS } from './data'
-import { createDotMatrix, createSineWave, createKnob } from './components'
+import { screen, knob, sine, toggle } from './components'
 import './utils'
 
 // const { canvas } = init()
@@ -15,9 +15,10 @@ let levelIndex = 0
 let level
 
 const componentFactories = {
-  screen: createDotMatrix,
-  sine: createSineWave,
-  knob: createKnob,
+  screen,
+  knob,
+  sine,
+  toggle,
 }
 
 const createLevel = (index = 0, onWin) => {
