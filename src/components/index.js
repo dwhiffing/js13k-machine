@@ -1,7 +1,7 @@
 import { Sprite } from 'kontra'
 export { default as knob } from './knob'
-export { default as screen } from './dotMatrix'
-export { default as sine } from './sineWave'
+export { default as gridScreen } from './gridScreen'
+export { default as waveScreen } from './waveScreen'
 export { default as toggle } from './toggle'
 
 export const createComponent = ({
@@ -24,7 +24,7 @@ export const createComponent = ({
     width,
     height,
     render: function () {
-      if (window.debug) {
+      if (window.debug && this.draggable) {
         this.context.fillStyle = '#fff'
         this.context.fillText(this.key, 0, -10)
       }

@@ -4,7 +4,6 @@ import createComponentSystem from './systems/components'
 import createLevelEditorSystem from './systems/editor'
 import createConnectionSystem from './systems/connections'
 import { LEVELS } from './data'
-import { screen, knob, sine, toggle } from './components'
 import './utils'
 
 // const { canvas } = init()
@@ -14,17 +13,10 @@ initPointer()
 let levelIndex = 0
 let level
 
-const componentFactories = {
-  screen,
-  knob,
-  sine,
-  toggle,
-}
-
 const createLevel = (index = 0, onWin) => {
   const { connections, components } = LEVELS[index]
 
-  const space = createSpace(connections)
+  const space = createSpace()
 
   const componentSystem = createComponentSystem(space)
   space.addSystem(componentSystem)
@@ -36,8 +28,12 @@ const createLevel = (index = 0, onWin) => {
   space.addSystem(levelEditorSystem)
 
   components.forEach((component) => {
-    const key = component.key.split('-')[0]
-    space.addEntity(componentFactories[key](component))
+    const type = component.key.split('-')[0]
+    space.createEntity(type, component)
+  })
+
+  connections.forEach((connectionString) => {
+    space.addConnection.call(space, connectionString)
   })
 
   return {

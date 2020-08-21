@@ -1,34 +1,60 @@
-const createSpace = (connections) => {
+import { gridScreen, knob, waveScreen, toggle } from '../components'
+
+const componentFactories = {
+  gridScreen,
+  knob,
+  waveScreen,
+  toggle,
+}
+
+const createSpace = () => {
   const systems = []
   const entities = []
+  const connections = []
 
-  const _connections = connections.map((c) => {
-    const [input, output] = c.split(':')
-    return {
-      input: { key: input.split('.')[0], prop: input.split('.')[1] },
-      output: { key: output.split('.')[0], prop: output.split('.')[1] },
+  const createEntity = function (type, opts) {
+    const id = entities.filter((e) => e.key.match(new RegExp(type))).length + 1
+    const entity = componentFactories[type]({
+      key: opts.key || `${type}-${id}`,
+      ...opts,
+    })
+    if (entity) {
+      this.addEntity(entity)
+      return entity
     }
-  })
+  }
 
   return {
-    rawConnections: connections,
-    connections: _connections,
-    addSystem: (system) => {
+    createEntity,
+    connections,
+    addConnection: function (connectionString = '') {
+      const [input = '', output = ''] = connectionString.split(':')
+
+      const connection = {
+        input: { key: input.split('.')[0], prop: input.split('.')[1] },
+        output: { key: output.split('.')[0], prop: output.split('.')[1] },
+      }
+      this.connections.push(connection)
+      systems.forEach((system) => {
+        system.addConnection && system.addConnection(connection)
+      })
+    },
+    addSystem: function (system) {
       systems.push(system)
     },
-    addEntity: (entity) => {
+    addEntity: function (entity) {
       entities.push(entity)
       systems.forEach((system) => {
         system.addEntity(entity)
       })
     },
-    update: () => {
+    update: function () {
       systems.forEach((c) => c.update())
     },
-    render: () => {
+    render: function () {
       systems.forEach((c) => c.render())
     },
-    shutdown: () => {
+    shutdown: function () {
       systems.forEach((system) => system.shutdown && system.shutdown())
     },
     entities,

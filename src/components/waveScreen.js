@@ -6,7 +6,7 @@ const DEFAULT_HEIGHT = 300
 const LINE_WIDTH = 5
 
 // TODO: allow setting of active and goal via level data
-const createSineWave = ({ key, x, y, width, height }) => {
+const createWaveScreen = ({ key, x, y, width = 600, height = 300 }) => {
   return createComponent({
     key,
     x,
@@ -29,7 +29,8 @@ const createSineWave = ({ key, x, y, width, height }) => {
       }
     },
     updateValue: function (key, value) {
-      this.active[key] = nearest(value, 5)
+      if (key === 'wavelength' || key === 'amplitude')
+        this.active[key] = nearest(value, 5)
     },
     render: function () {
       this.isValid =
@@ -73,4 +74,4 @@ const createSineWave = ({ key, x, y, width, height }) => {
   })
 }
 
-export default createSineWave
+export default createWaveScreen

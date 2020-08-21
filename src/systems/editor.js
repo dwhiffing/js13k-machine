@@ -9,6 +9,7 @@ import guify from 'guify'
 // once finished, can output updated values to console
 const createLevelEditorSystem = (space, x, y) => {
   let components = []
+  let enabled = false
   const gui = new guify({
     barMode: 'none',
     align: 'left',
@@ -17,69 +18,56 @@ const createLevelEditorSystem = (space, x, y) => {
   })
   window.debug = true
   const addPanel = (opts) => components.push(gui.Register(opts))
+  addPanel({
+    type: 'button',
+    label: 'Copy level',
+    action: () => {
+      const components = space.entities.map((e) => e.toJSON())
+      navigator.clipboard.writeText(
+        JSON.stringify({
+          components,
+          connections: space.connections.map(
+            (c) =>
+              `${c.input.key}.${c.input.prop}:${c.output.key}.${c.output.prop}`,
+          ),
+        }),
+      )
+    },
+  })
   const keydown = (e) => {
-    if (e.key === ' ') {
-      space.entities.forEach((c) => (c.draggable = true))
+    if (e.key === 'p') {
+      enabled = !enabled
+      space.entities.forEach((c) => (c.draggable = enabled))
+      return
     }
-    // TODO: need tools for adding different components
-    // if (e.key === '1') {
-    //   const knob = createKnob('knob-3', 0, 0, 50)
-    //   knob.draggable = true
-    //   knob.pointerDown = true
-    //   space.addEntity(knob)
-    // }
-    if (e.key === 'F2') {
+    if (!enabled) return
+    let entity
+    if (e.key === '1') {
+      entity = space.createEntity('knob', { x: 300, y: 300 })
     }
-  }
-
-  const keyup = (e) => {
-    if (e.key === ' ') {
-      space.entities.forEach((c) => (c.draggable = false))
+    if (e.key === '2') {
+      entity = space.createEntity('toggle', { x: 300, y: 300 })
+    }
+    if (e.key === '3') {
+      entity = space.createEntity('gridScreen', { x: 300, y: 300 })
+    }
+    if (e.key === '4') {
+      entity = space.createEntity('waveScreen', { x: 300, y: 300 })
+    }
+    if (e.key === '0') {
+      const connectionString = window.prompt(
+        'Enter new connection',
+        'knob-1.value:gridScreen-1.x',
+      )
+      space.addConnection(connectionString)
+    }
+    if (entity) {
+      entity.draggable = true
+      entity.pointerDown = true
     }
   }
 
   document.addEventListener('keydown', keydown)
-  document.addEventListener('keyup', keyup)
-  space.connections.forEach(({ input, output }) => {
-    addPanel({
-      type: 'folder',
-      label: `${input.key}-${output.key}`,
-      open: false,
-    })
-    addPanel({
-      type: 'text',
-      folder: `${input.key}-${output.key}`,
-      label: 'input.key',
-      object: input,
-      property: 'key',
-    })
-    addPanel({
-      type: 'text',
-      folder: `${input.key}-${output.key}`,
-      label: 'output.key',
-      object: output,
-      property: 'key',
-    })
-    addPanel({
-      type: 'text',
-      folder: `${input.key}-${output.key}`,
-      label: 'output.prop',
-      object: output,
-      property: 'prop',
-    })
-  })
-  setTimeout(() => {
-    addPanel({
-      type: 'button',
-      label: 'Copy',
-      action: () => {
-        const components = space.entities.map((e) => e.toJSON())
-        navigator.clipboard.writeText(
-          JSON.stringify({ components, connections: space.rawConnections }),
-        )
-      },
-    })
-  }, 10)
 
   return {
     addEntity: (entity) => {
@@ -118,12 +106,40 @@ const createLevelEditorSystem = (space, x, y) => {
           object: entity,
         })
     },
+    addConnection: function (connection) {
+      const { input, output } = connection
+      addPanel({
+        type: 'folder',
+        label: `${input.key}-${output.key}`,
+        open: false,
+      })
+      addPanel({
+        type: 'text',
+        folder: `${input.key}-${output.key}`,
+        label: 'input.key',
+        object: input,
+        property: 'key',
+      })
+      addPanel({
+        type: 'text',
+        folder: `${input.key}-${output.key}`,
+        label: 'output.key',
+        object: output,
+        property: 'key',
+      })
+      addPanel({
+        type: 'text',
+        folder: `${input.key}-${output.key}`,
+        label: 'output.prop',
+        object: output,
+        property: 'prop',
+      })
+    },
     update: (time) => {},
     render: (time) => {},
     shutdown: () => {
       components.forEach((c) => gui.Remove(c))
       document.removeEventListener('keydown', keydown)
-      document.removeEventListener('keyup', keyup)
     },
   }
 }

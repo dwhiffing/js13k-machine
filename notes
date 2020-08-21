@@ -1,9 +1,9 @@
 LEVEL IDEAS:
-  have many knobs connected to many screens, where their value effects each screen differently
+  have many knobs connected to many screens, where their value effects each gridScreen differently
     you have to find the values that satisfy all of the screens
 
   morse code
 
-  screen with active number and goal number
+  gridScreen with active number and goal number
 
   

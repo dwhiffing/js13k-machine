@@ -4,15 +4,14 @@ import { clamp } from 'kontra'
 const LINE_WIDTH = 5
 
 // TODO: allow setting of active and goal dot via level data
-const createDotMatrix = ({ key, x, y, width, height, resolution = 40 }) => {
-  const getCoords = ({ x, y }) => {
-    const maxX = (width - resolution) / resolution
-    const maxY = (height - resolution) / resolution
-    return {
-      x: clamp(0, maxX, Math.floor(((x / 100) * width) / resolution)),
-      y: clamp(0, maxY, Math.floor(((y / 100) * height) / resolution)),
-    }
-  }
+const createGridScreen = ({
+  key,
+  x,
+  y,
+  width = 400,
+  height = 400,
+  resolution = 40,
+}) => {
   return createComponent({
     key,
     x,
@@ -37,11 +36,15 @@ const createDotMatrix = ({ key, x, y, width, height, resolution = 40 }) => {
       }
     },
     updateValue: function (key, value) {
-      this.activeDot[key] = value
+      if (key === 'x' || key === 'y') {
+        this.activeDot[key] = Math.floor(value)
+      } else if (key === 'resolution') {
+        this[key] = value
+      }
     },
     render: function () {
-      const activeCoords = getCoords(this.activeDot)
-      const goalCoords = getCoords(this.goalDot)
+      const activeCoords = this.getCoords(this.activeDot)
+      const goalCoords = this.getCoords(this.goalDot)
       this.isValid =
         activeCoords.x === goalCoords.x && activeCoords.y === goalCoords.y
 
@@ -54,7 +57,7 @@ const createDotMatrix = ({ key, x, y, width, height, resolution = 40 }) => {
       const dots = [this.goalDot, this.activeDot]
 
       dots.forEach((dot) => {
-        const coords = getCoords(dot)
+        const coords = this.getCoords(dot)
         this.context.beginPath()
         this.context.fillStyle = dot.color
         this.context.rect(
@@ -66,7 +69,23 @@ const createDotMatrix = ({ key, x, y, width, height, resolution = 40 }) => {
         this.context.fill()
       })
     },
+    getCoords: function ({ x, y }) {
+      const maxX = (this.width - this.resolution) / this.resolution
+      const maxY = (this.height - this.resolution) / this.resolution
+      return {
+        x: clamp(
+          0,
+          maxX,
+          Math.floor(((x / 100) * this.width) / this.resolution),
+        ),
+        y: clamp(
+          0,
+          maxY,
+          Math.floor(((y / 100) * this.height) / this.resolution),
+        ),
+      }
+    },
   })
 }
 
-export default createDotMatrix
+export default createGridScreen

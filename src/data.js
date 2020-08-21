@@ -12,7 +12,7 @@ export const LEVELS = [
       { key: 'toggle-7', x: 72, y: 208, max: 24 },
       { key: 'toggle-8', x: 187, y: 201, max: 48 },
       {
-        key: 'screen-1',
+        key: 'gridScreen-1',
         x: 337,
         y: 80,
         width: 400,
@@ -21,14 +21,14 @@ export const LEVELS = [
       },
     ],
     connections: [
-      'toggle-1.value:screen-1.x',
-      'toggle-2.value:screen-1.x',
-      'toggle-3.value:screen-1.x',
-      'toggle-4.value:screen-1.x',
-      'toggle-5.value:screen-1.y',
-      'toggle-6.value:screen-1.y',
-      'toggle-7.value:screen-1.y',
-      'toggle-8.value:screen-1.y',
+      'toggle-1.value:gridScreen-1.x',
+      'toggle-2.value:gridScreen-1.x',
+      'toggle-3.value:gridScreen-1.x',
+      'toggle-4.value:gridScreen-1.x',
+      'toggle-5.value:gridScreen-1.y',
+      'toggle-6.value:gridScreen-1.y',
+      'toggle-7.value:gridScreen-1.y',
+      'toggle-8.value:gridScreen-1.y',
     ],
   },
   {
@@ -36,7 +36,7 @@ export const LEVELS = [
       { key: 'knob-1', x: 250, y: 450, value: 39, min: 0, max: 100 },
       { key: 'knob-2', x: 450, y: 450, value: 60, min: 0, max: 100 },
       {
-        key: 'screen-1',
+        key: 'gridScreen-1',
         x: 100,
         y: 100,
         width: 590,
@@ -44,17 +44,17 @@ export const LEVELS = [
         resolution: 40,
       },
     ],
-    connections: ['knob-1.value:screen-1.x', 'knob-2.value:screen-1.y'],
+    connections: ['knob-1.value:gridScreen-1.x', 'knob-2.value:gridScreen-1.y'],
   },
   {
     components: [
       { key: 'knob-1', x: 250, y: 450 },
       { key: 'knob-2', x: 450, y: 450 },
-      { key: 'sine-1', x: 100, y: 100, width: 590, height: 300 },
+      { key: 'waveScreen-1', x: 100, y: 100, width: 590, height: 300 },
     ],
     connections: [
-      'knob-1.value:sine-1.wavelength',
-      'knob-2.value:sine-1.amplitude',
+      'knob-1.value:waveScreen-1.wavelength',
+      'knob-2.value:waveScreen-1.amplitude',
     ],
   },
   {

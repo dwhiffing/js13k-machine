@@ -2,12 +2,15 @@ const createConnectionSystem = (space, onWin) => {
   const keydown = (e) => {
     if (e.key === ' ') {
       if (
-        space.entities.every((c) => !c.key.match(/screen|sine/) || c.isValid)
+        // TODO: shouldn't hardcode these
+        space.entities.every(
+          (c) => !c.key.match(/gridScreen|waveScreen/) || c.isValid,
+        )
       ) {
         onWin && onWin()
       }
     }
-    if (e.key === 'n') {
+    if (e.key === '!') {
       onWin && onWin()
     }
   }

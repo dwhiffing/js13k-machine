@@ -30,6 +30,7 @@ const createToggle = ({
       }
     },
     onDown: function (event) {
+      if (this.draggable) return
       this.value = this.value ? min : max
     },
     render: function () {
