@@ -23,7 +23,13 @@ export const createComponent = ({
     y,
     width,
     height,
-    render,
+    render: function () {
+      if (window.debug) {
+        this.context.fillStyle = '#fff'
+        this.context.fillText(this.key, 0, -10)
+      }
+      render.call(this)
+    },
     updateValue: function (key, value) {
       if (!updateValue) {
         this[key] = value

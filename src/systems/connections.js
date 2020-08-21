@@ -1,7 +1,9 @@
 const createConnectionSystem = (space, onWin) => {
   const keydown = (e) => {
     if (e.key === ' ') {
-      if (space.entities.every((c) => c.key !== 'screen-1' || c.isValid)) {
+      if (
+        space.entities.every((c) => !c.key.match(/screen|sine/) || c.isValid)
+      ) {
         onWin && onWin()
       }
     }

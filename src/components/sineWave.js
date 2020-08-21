@@ -22,8 +22,8 @@ const createSineWave = ({ key, x, y, width, height }) => {
     toJSON: function () {
       return {
         key: this.key,
-        x: this.x,
-        y: this.y,
+        x: Math.floor(this.x),
+        y: Math.floor(this.y),
         width: this.width,
         height: this.height,
       }

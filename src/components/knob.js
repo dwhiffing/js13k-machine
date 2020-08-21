@@ -26,8 +26,8 @@ const createKnob = ({
     toJSON: function () {
       return {
         key: this.key,
-        x: this.x,
-        y: this.y,
+        x: Math.floor(this.x),
+        y: Math.floor(this.y),
         value: this.value,
         min: this.min,
         max: this.max,

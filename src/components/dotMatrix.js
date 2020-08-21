@@ -29,8 +29,8 @@ const createDotMatrix = ({ key, x, y, width, height, resolution = 40 }) => {
     toJSON: function () {
       return {
         key: this.key,
-        x: this.x,
-        y: this.y,
+        x: Math.floor(this.x),
+        y: Math.floor(this.y),
         width: this.width,
         height: this.height,
         resolution: this.resolution,

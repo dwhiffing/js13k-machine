@@ -1,4 +1,5 @@
 const n = 6
+// TODO: need to make levels more compact
 export const LEVELS = [
   {
     components: [
@@ -20,38 +21,14 @@ export const LEVELS = [
       },
     ],
     connections: [
-      {
-        input: { key: 'toggle-1', prop: 'value' },
-        output: { key: 'screen-1', prop: 'x' },
-      },
-      {
-        input: { key: 'toggle-2', prop: 'value' },
-        output: { key: 'screen-1', prop: 'x' },
-      },
-      {
-        input: { key: 'toggle-3', prop: 'value' },
-        output: { key: 'screen-1', prop: 'x' },
-      },
-      {
-        input: { key: 'toggle-4', prop: 'value' },
-        output: { key: 'screen-1', prop: 'x' },
-      },
-      {
-        input: { key: 'toggle-5', prop: 'value' },
-        output: { key: 'screen-1', prop: 'y' },
-      },
-      {
-        input: { key: 'toggle-6', prop: 'value' },
-        output: { key: 'screen-1', prop: 'y' },
-      },
-      {
-        input: { key: 'toggle-7', prop: 'value' },
-        output: { key: 'screen-1', prop: 'y' },
-      },
-      {
-        input: { key: 'toggle-8', prop: 'value' },
-        output: { key: 'screen-1', prop: 'y' },
-      },
+      'toggle-1.value:screen-1.x',
+      'toggle-2.value:screen-1.x',
+      'toggle-3.value:screen-1.x',
+      'toggle-4.value:screen-1.x',
+      'toggle-5.value:screen-1.y',
+      'toggle-6.value:screen-1.y',
+      'toggle-7.value:screen-1.y',
+      'toggle-8.value:screen-1.y',
     ],
   },
   {
@@ -67,16 +44,7 @@ export const LEVELS = [
         resolution: 40,
       },
     ],
-    connections: [
-      {
-        input: { key: 'knob-1', prop: 'value' },
-        output: { key: 'screen-1', prop: 'x' },
-      },
-      {
-        input: { key: 'knob-2', prop: 'value' },
-        output: { key: 'screen-1', prop: 'y' },
-      },
-    ],
+    connections: ['knob-1.value:screen-1.x', 'knob-2.value:screen-1.y'],
   },
   {
     components: [
@@ -85,14 +53,12 @@ export const LEVELS = [
       { key: 'sine-1', x: 100, y: 100, width: 590, height: 300 },
     ],
     connections: [
-      {
-        input: { key: 'knob-1', prop: 'value' },
-        output: { key: 'sine-1', prop: 'wavelength' },
-      },
-      {
-        input: { key: 'knob-2', prop: 'value' },
-        output: { key: 'sine-1', prop: 'amplitude' },
-      },
+      'knob-1.value:sine-1.wavelength',
+      'knob-2.value:sine-1.amplitude',
     ],
+  },
+  {
+    components: [],
+    connections: [],
   },
 ]

@@ -20,8 +20,8 @@ const createToggle = ({
     toJSON: function () {
       return {
         key: this.key,
-        x: this.x,
-        y: this.y,
+        x: Math.floor(this.x),
+        y: Math.floor(this.y),
         min: this.min,
         max: this.max,
       }
