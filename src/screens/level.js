@@ -5,7 +5,13 @@ import createConnectionSystem from '../systems/connections'
 import { LEVELS } from '../data'
 // import createLevelEditorSystem from './systems/editor'
 
-export const createLevel = (index = 0, onWin) => {
+const textParams = {
+  color: 'white',
+  font: '20px Arial, sans-serif',
+  anchor: { x: 0.5, y: 0.5 },
+}
+
+export const createLevel = (index = 0, startNextLevel, startPrevLevel) => {
   const { connections, components } = LEVELS[index]
 
   const space = createSpace()
@@ -18,24 +24,29 @@ export const createLevel = (index = 0, onWin) => {
 
   // const levelEditorSystem = createLevelEditorSystem(space)
   // space.addSystem(levelEditorSystem)
-  space.nextLevelButton = Button({
-    x: 650 + 20,
-    y: 650,
 
-    text: {
-      text: 'Next',
-      color: 'white',
-      font: '20px Arial, sans-serif',
-      anchor: { x: 0.5, y: 0.5 },
-    },
+  space.prevLevelButton = Button({
+    x: 70,
+    y: 650,
+    text: { ...textParams, text: 'Prev' },
     onDown() {
-      onWin()
+      startPrevLevel()
     },
   })
 
+  space.nextLevelButton = Button({
+    x: 670,
+    y: 650,
+    text: { ...textParams, text: 'Next' },
+    onDown() {
+      startNextLevel()
+    },
+  })
+
+  space.prevLevelButton.key = 'prevLevelButton'
+  space.addEntity(space.prevLevelButton)
+
   space.nextLevelButton.key = 'nextLevelButton'
-  space.nextLevelButton.textNode.color = 'rgba(255,255,255,0)'
-  space.nextLevelButton.disable()
   space.addEntity(space.nextLevelButton)
 
   components.forEach((component) => {

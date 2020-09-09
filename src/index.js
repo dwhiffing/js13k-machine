@@ -11,25 +11,35 @@ import '../lib/zzfxm'
 init()
 initPointer()
 
-let levelIndex = 0
+let levelIndex = -1
 let level
 
-const startNextLevel = () => {
+const startLevel = () => {
   level && level.shutdown()
-  if (levelIndex === 0) {
-    let music = zzfxP(...zzfxM(...MUSIC[0]))
-    music.loop = true
+  if (levelIndex === -1) {
+    // let music = zzfxP(...zzfxM(...MUSIC[0]))
+    // music.loop = true
   }
   if (levelIndex >= LEVELS.length) {
+    // TODO: need to check if all levels are valid before calling this
     level = createWin(() => {
       levelIndex = 0
       level = createMenu(startNextLevel)
     })
   } else {
-    level = createLevel(levelIndex, startNextLevel)
+    level = createLevel(levelIndex, startNextLevel, startPrevLevel)
     levelIndex > 0 && zzfx(...LEVEL_SOUND)
-    levelIndex++
   }
+}
+
+const startNextLevel = () => {
+  levelIndex++
+  startLevel()
+}
+
+const startPrevLevel = () => {
+  if (levelIndex > 0) levelIndex--
+  startLevel()
 }
 
 level = createMenu(startNextLevel)
