@@ -43,13 +43,12 @@ const createGridScreen = ({
       } else if (key === 'resolution') {
         this[key] = value
       }
-    },
-    render: function () {
       const activeCoords = this.getCoords(this.active)
       const goalCoords = this.getCoords(this.goal)
       this.isValid =
         activeCoords.x === goalCoords.x && activeCoords.y === goalCoords.y
-
+    },
+    render: function () {
       this.context.strokeStyle = this.isValid ? 'green' : 'white'
       this.context.lineWidth = LINE_WIDTH
       this.context.beginPath()

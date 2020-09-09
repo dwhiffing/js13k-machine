@@ -2,6 +2,7 @@ import { Sprite } from 'kontra'
 export { default as knob } from './knob'
 export { default as gridScreen } from './gridScreen'
 export { default as waveScreen } from './waveScreen'
+export { default as numberScreen } from './numberScreen'
 export { default as toggle } from './toggle'
 
 export const createComponent = ({

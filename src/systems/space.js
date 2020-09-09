@@ -1,11 +1,4 @@
-import { gridScreen, knob, waveScreen, toggle } from '../components'
-
-const componentFactories = {
-  gridScreen,
-  knob,
-  waveScreen,
-  toggle,
-}
+import * as componentFactories from '../components'
 
 const createSpace = () => {
   const systems = []
@@ -31,8 +24,14 @@ const createSpace = () => {
       const [input = '', output = ''] = connectionString.split(':')
 
       const connection = {
-        input: { key: input.split('.')[0], prop: input.split('.')[1] },
-        output: { key: output.split('.')[0], prop: output.split('.')[1] },
+        input: {
+          key: input.split('.')[0],
+          prop: input.split('.').slice(1).join('.'),
+        },
+        output: {
+          key: output.split('.')[0],
+          prop: output.split('.').slice(1).join('.'),
+        },
       }
       this.connections.push(connection)
       systems.forEach((system) => {

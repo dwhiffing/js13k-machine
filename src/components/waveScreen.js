@@ -34,13 +34,12 @@ const createWaveScreen = ({ key, x, y, goal, width = 600, height = 300 }) => {
     updateValue: function (key, value) {
       if (key === 'wavelength' || key === 'amplitude')
         this.active[key] = nearest(value, 5)
-    },
-    render: function () {
       this.isValid =
         Math.floor(this.active.wavelength) ===
           Math.floor(this.goal.wavelength) &&
         Math.floor(this.active.amplitude) === Math.floor(this.goal.amplitude)
-
+    },
+    render: function () {
       this.context.strokeStyle = this.isValid ? 'green' : 'white'
       this.context.lineWidth = LINE_WIDTH
       this.context.beginPath()

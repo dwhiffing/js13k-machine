@@ -2,6 +2,25 @@
 export const LEVELS = [
   {
     components: [
+      { key: 'knob-1', x: 200, y: 450, max: 100 },
+      { key: 'knob-2', x: 350, y: 450, max: 100 },
+      { key: 'knob-3', x: 500, y: 450, max: 100 },
+      {
+        key: 'numberScreen-1',
+        x: 300,
+        y: 150,
+        goal: 123,
+        value: 456,
+      },
+    ],
+    connections: [
+      'knob-1.value:numberScreen-1.value.0',
+      'knob-2.value:numberScreen-1.value.1',
+      'knob-3.value:numberScreen-1.value.2',
+    ],
+  },
+  {
+    components: [
       { key: 'toggle-1', x: 73, y: 316, value: 6, max: 6 },
       { key: 'toggle-2', x: 189, y: 316, max: 12 },
       { key: 'toggle-3', x: 74, y: 417, max: 24 },
