@@ -1,6 +1,7 @@
 import { createComponent } from './index'
 import { between } from '../utils'
 import { clamp } from 'kontra'
+import { WIN_SOUND } from '../data'
 const LINE_WIDTH = 5
 
 const createGridScreen = ({
@@ -48,6 +49,11 @@ const createGridScreen = ({
       const goalCoords = this.getCoords(this.goal)
       this.isValid =
         activeCoords.x === goalCoords.x && activeCoords.y === goalCoords.y
+
+      if(this.isValid && !this.hasPlayedSound) {
+        this.hasPlayedSound = true
+        zzfx(...WIN_SOUND)
+      }
 
       this.context.strokeStyle = this.isValid ? 'green' : 'white'
       this.context.lineWidth = LINE_WIDTH

@@ -1,4 +1,3 @@
-const n = 6
 // TODO: need to make levels more compact
 export const LEVELS = [
   {
@@ -70,3 +69,17 @@ export const LEVELS = [
     connections: [],
   },
 ]
+
+// prettier-ignore
+export const MUSIC = [
+  [[[.5,0,120,1.5,,2.5,,,-.001,,3,,,,,,,,,1]],[[[,-1,18,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,],[,1,,,,,,,,,,,,,,,23,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,],[,-1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,22,,,,,,,,,,,,,,,,,,,,,,,],[,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,12,,,,,,,,,,,]]],[0],,{"title":"New Song","instruments":["Synth Wave"],"patterns":["Pattern 0"]}],
+]
+
+// prettier-ignore
+export const CLICK_SOUND = [,,,,.01,,,,.1,,,,.01]
+
+// prettier-ignore
+export const WIN_SOUND = [,0,0,.24,.3,.3,3,0,,,4,.01,.02,,1,,.04,.7,.09,.4]
+
+// prettier-ignore
+export const LEVEL_SOUND = [,0,0,.24,.3,.3,3,0,,,4,.01,.02,,1,,.04,.7,.09,.4]

@@ -1,10 +1,12 @@
 import { init, initPointer, GameLoop } from 'kontra'
 import createSpace from './systems/space'
 import createComponentSystem from './systems/components'
-import createLevelEditorSystem from './systems/editor'
+// import createLevelEditorSystem from './systems/editor'
 import createConnectionSystem from './systems/connections'
-import { LEVELS } from './data'
+import { LEVELS, MUSIC, LEVEL_SOUND } from './data'
 import './utils'
+import '../lib/zzfx'
+import '../lib/zzfxm'
 
 // const { canvas } = init()
 init()
@@ -24,8 +26,8 @@ const createLevel = (index = 0, onWin) => {
   const connectionSystem = createConnectionSystem(space, onWin)
   space.addSystem(connectionSystem)
 
-  const levelEditorSystem = createLevelEditorSystem(space)
-  space.addSystem(levelEditorSystem)
+  // const levelEditorSystem = createLevelEditorSystem(space)
+  // space.addSystem(levelEditorSystem)
 
   components.forEach((component) => {
     const type = component.key.split('-')[0]
@@ -44,12 +46,14 @@ const createLevel = (index = 0, onWin) => {
 
 const startNextLevel = () => {
   if (levelIndex >= LEVELS.length) return
+  if (levelIndex > 0) zzfx(...LEVEL_SOUND)
   level && level.shutdown()
   level = createLevel(levelIndex, startNextLevel)
   levelIndex++
 }
 
 startNextLevel()
+zzfxP(...zzfxM(...MUSIC[0]))
 
 GameLoop({
   update: () => level && level.space.update(),

@@ -1,4 +1,5 @@
 import { createComponent } from './index'
+import { CLICK_SOUND } from '../data'
 
 const createToggle = ({
   key,
@@ -32,6 +33,7 @@ const createToggle = ({
     onDown: function (event) {
       if (this.draggable) return
       this.value = this.value ? this.min : this.max
+      zzfx(...CLICK_SOUND)
     },
     render: function () {
       this.context.strokeStyle = this.draggable ? 'gray' : 'white'
