@@ -64,10 +64,10 @@ export const LEVELS = [
       'knob-2.value:waveScreen-1.amplitude',
     ],
   },
-  {
-    components: [],
-    connections: [],
-  },
+  // {
+  //   components: [],
+  //   connections: [],
+  // },
 ]
 
 // prettier-ignore
@@ -82,4 +82,7 @@ export const CLICK_SOUND = [,,,,.01,,,,.1,,,,.01]
 export const WIN_SOUND = [,0,0,.24,.3,.3,3,0,,,4,.01,.02,,1,,.04,.7,.09,.4]
 
 // prettier-ignore
-export const LEVEL_SOUND = [,0,0,.24,.3,.3,3,0,,,4,.01,.02,,1,,.04,.7,.09,.4]
+export const LEVEL_SOUND = [,0,-70,.24,.6,.3,3,0,,,.6,.01,.04,,10,,.55,.7,.04,.35]
+
+// prettier-ignore
+export const GAME_OVER_SOUND =[,,300,.04,3,.53,1,1.35,,,34,.06,.01,.1,,,.14,.63,.11]

@@ -1,20 +1,4 @@
-const createConnectionSystem = (space, onWin) => {
-  const keydown = (e) => {
-    if (e.key === ' ') {
-      if (
-        // TODO: shouldn't hardcode these
-        space.entities.every(
-          (c) => !c.key.match(/gridScreen|waveScreen/) || c.isValid,
-        )
-      ) {
-        onWin && onWin()
-      }
-    }
-    if (e.key === '!') {
-      onWin && onWin()
-    }
-  }
-  document.addEventListener('keydown', keydown)
+const createConnectionSystem = (space) => {
   function uniq(value, index, self) {
     return self.indexOf(value) === index
   }
@@ -43,9 +27,7 @@ const createConnectionSystem = (space, onWin) => {
       })
     },
     render: () => {},
-    shutdown: () => {
-      document.removeEventListener('keydown', keydown)
-    },
+    shutdown: () => {},
   }
 }
 

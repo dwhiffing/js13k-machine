@@ -37,8 +37,9 @@ const createWaveScreen = ({ key, x, y, goal, width = 600, height = 300 }) => {
     },
     render: function () {
       this.isValid =
-        this.active.wavelength === this.goal.wavelength &&
-        this.active.amplitude === this.goal.amplitude
+        Math.floor(this.active.wavelength) ===
+          Math.floor(this.goal.wavelength) &&
+        Math.floor(this.active.amplitude) === Math.floor(this.goal.amplitude)
 
       this.context.strokeStyle = this.isValid ? 'green' : 'white'
       this.context.lineWidth = LINE_WIDTH

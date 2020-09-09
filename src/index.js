@@ -1,59 +1,38 @@
 import { init, initPointer, GameLoop } from 'kontra'
-import createSpace from './systems/space'
-import createComponentSystem from './systems/components'
-// import createLevelEditorSystem from './systems/editor'
-import createConnectionSystem from './systems/connections'
 import { LEVELS, MUSIC, LEVEL_SOUND } from './data'
+import { createWin } from './screens/win'
+import { createMenu } from './screens/menu'
+import { createLevel } from './screens/level'
+
 import './utils'
 import '../lib/zzfx'
 import '../lib/zzfxm'
 
-// const { canvas } = init()
 init()
 initPointer()
 
 let levelIndex = 0
 let level
 
-const createLevel = (index = 0, onWin) => {
-  const { connections, components } = LEVELS[index]
-
-  const space = createSpace()
-
-  const componentSystem = createComponentSystem(space)
-  space.addSystem(componentSystem)
-
-  const connectionSystem = createConnectionSystem(space, onWin)
-  space.addSystem(connectionSystem)
-
-  // const levelEditorSystem = createLevelEditorSystem(space)
-  // space.addSystem(levelEditorSystem)
-
-  components.forEach((component) => {
-    const type = component.key.split('-')[0]
-    space.createEntity(type, component)
-  })
-
-  connections.forEach((connectionString) => {
-    space.addConnection.call(space, connectionString)
-  })
-
-  return {
-    space,
-    shutdown: () => space.shutdown(),
+const startNextLevel = () => {
+  level && level.shutdown()
+  if (levelIndex === 0) {
+    let music = zzfxP(...zzfxM(...MUSIC[0]))
+    music.loop = true
+  }
+  if (levelIndex >= LEVELS.length) {
+    level = createWin(() => {
+      levelIndex = 0
+      level = createMenu(startNextLevel)
+    })
+  } else {
+    level = createLevel(levelIndex, startNextLevel)
+    levelIndex > 0 && zzfx(...LEVEL_SOUND)
+    levelIndex++
   }
 }
 
-const startNextLevel = () => {
-  if (levelIndex >= LEVELS.length) return
-  if (levelIndex > 0) zzfx(...LEVEL_SOUND)
-  level && level.shutdown()
-  level = createLevel(levelIndex, startNextLevel)
-  levelIndex++
-}
-
-startNextLevel()
-zzfxP(...zzfxM(...MUSIC[0]))
+level = createMenu(startNextLevel)
 
 GameLoop({
   update: () => level && level.space.update(),

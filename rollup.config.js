@@ -12,7 +12,7 @@ export default {
     format: 'esm',
   },
   plugins: [
-    kontra({}),
+    kontra({ gameObject: { group: true } }),
     commonjs(),
     nodeResolve(),
     html({
