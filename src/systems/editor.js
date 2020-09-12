@@ -94,13 +94,14 @@ const createLevelEditorSystem = (space, x, y) => {
         })
       })
 
-      addPanel({
-        type: 'display',
-        label: 'value',
-        property: 'value',
-        folder: entity.key,
-        object: entity,
-      })
+      entity.value &&
+        addPanel({
+          type: 'display',
+          label: 'value',
+          property: 'value',
+          folder: entity.key,
+          object: entity,
+        })
 
       minMax.forEach((key) => {
         if (typeof entity[key] !== 'number') return

@@ -13,6 +13,9 @@ initPointer()
 
 let levelIndex = -1
 let level
+let muted = false
+window.playSound = (sound) => !muted && zzfx(...sound)
+window.toggleMute = () => (muted = !muted)
 
 const startLevel = () => {
   level && level.shutdown()
@@ -28,7 +31,7 @@ const startLevel = () => {
     })
   } else {
     level = createLevel(levelIndex, startNextLevel, startPrevLevel)
-    levelIndex > 0 && zzfx(...LEVEL_SOUND)
+    levelIndex > 0 && playSound(LEVEL_SOUND)
   }
 }
 

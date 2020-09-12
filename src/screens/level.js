@@ -3,7 +3,7 @@ import createSpace from '../systems/space'
 import createComponentSystem from '../systems/components'
 import createConnectionSystem from '../systems/connections'
 import { LEVELS } from '../data'
-// import createLevelEditorSystem from './systems/editor'
+import createLevelEditorSystem from '../systems/editor'
 
 const textParams = {
   color: 'white',
@@ -22,8 +22,8 @@ export const createLevel = (index = 0, startNextLevel, startPrevLevel) => {
   const connectionSystem = createConnectionSystem(space)
   space.addSystem(connectionSystem)
 
-  // const levelEditorSystem = createLevelEditorSystem(space)
-  // space.addSystem(levelEditorSystem)
+  const levelEditorSystem = createLevelEditorSystem(space)
+  space.addSystem(levelEditorSystem)
 
   space.prevLevelButton = Button({
     x: 70,

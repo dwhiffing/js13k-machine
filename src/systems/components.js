@@ -22,7 +22,7 @@ const createComponentSystem = (space) => {
           hasPlayedSound = true
           space.nextLevelButton.textNode.color = 'rgba(255,255,255,1)'
           space.nextLevelButton.enable()
-          zzfx(...WIN_SOUND)
+          playSound(WIN_SOUND)
         }
       })
     },

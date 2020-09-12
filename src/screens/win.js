@@ -2,7 +2,7 @@ import { Button, Text } from 'kontra'
 import { GAME_OVER_SOUND } from '../data'
 
 export const createWin = (onDown) => {
-  zzfx(...GAME_OVER_SOUND)
+  playSound(GAME_OVER_SOUND)
   return {
     shutdown() {},
     space: {
