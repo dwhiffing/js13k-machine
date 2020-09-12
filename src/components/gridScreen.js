@@ -1,7 +1,6 @@
 import { createComponent } from './index'
 import { between } from '../utils'
 import { clamp } from 'kontra'
-import { WIN_SOUND } from '../data'
 import { createLedSprite, createGlow } from '../led'
 const LINE_WIDTH = 5
 
@@ -24,17 +23,19 @@ const createGridScreen = ({
     width,
     height,
     resolution,
-    active: { x: 0, y: 0, color: '#fff' },
+    active: { x: 0, y: 0, color: '#ffffff' },
     goal: {
       x: (goal && goal.x) || between(0, 100),
       y: (goal && goal.y) || between(0, 100),
-      color: '#0f0',
+      color: '#fff',
+      alpha: 0.05,
     },
     toJSON: function () {
       return {
         key: this.key,
         x: Math.floor(this.x),
         y: Math.floor(this.y),
+        isValid: !!this.isValid,
         goal: { x: this.goal.x, y: this.goal.y },
         width: this.width,
         height: this.height,
@@ -69,6 +70,8 @@ const createGridScreen = ({
 
       dots.forEach((dot) => {
         const coords = this.getCoords(dot)
+        this.context.save()
+        this.context.globalAlpha = dot.alpha || 1
         this.context.beginPath()
         this.context.fillStyle = dot.color
         this.context.rect(
@@ -78,6 +81,7 @@ const createGridScreen = ({
           this.resolution - 2,
         )
         this.context.fill()
+        this.context.restore()
       })
     },
     getCoords: function ({ x, y }) {

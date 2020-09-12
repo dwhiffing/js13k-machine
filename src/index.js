@@ -13,20 +13,32 @@ initPointer()
 
 let levelIndex = -1
 let level
+const INITIAL_LEVELS = JSON.parse(JSON.stringify(LEVELS))
 let muted = true
 window.playSound = (sound) => !muted && zzfx(...sound)
 window.toggleMute = () => (muted = !muted)
+window.debug = false
 
 const startLevel = () => {
   level && level.shutdown()
-  if (levelIndex === -1) {
-    // let music = zzfxP(...zzfxM(...MUSIC[0]))
-    // music.loop = true
+  if (levelIndex === -1 && !muted) {
+    let music = zzfxP(...zzfxM(...MUSIC[0]))
+    music.loop = true
   }
   if (levelIndex >= LEVELS.length) {
-    // TODO: need to check if all levels are valid before calling this
+    levelIndex = LEVELS.length - 1
+  }
+
+  const inCompleteLevels = LEVELS.filter(
+    (l) => !l.components.every((c) => !c.goal || (c.goal && c.isValid)),
+  )
+
+  if (inCompleteLevels.length === 0) {
+    LEVELS.forEach((level, i) => {
+      LEVELS[i] = INITIAL_LEVELS[i]
+    })
+    levelIndex = -1
     level = createWin(() => {
-      levelIndex = 0
       level = createMenu(startNextLevel)
     })
   } else {

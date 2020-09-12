@@ -1,4 +1,5 @@
-const clamp = (num, min, max) => (num < min ? min : num > max ? max : num)
+export const clamp = (num, min, max) =>
+  num < min ? min : num > max ? max : num
 
 const mix = (a, b, m) => (1 - m) * a + m * b
 const mixCol = (a, b, m) => ({

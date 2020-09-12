@@ -1,4 +1,5 @@
 import { createComponent } from './index'
+import { Text } from 'kontra'
 import { clamp } from 'kontra'
 
 const arrowWidth = 0.2
@@ -13,6 +14,15 @@ const createKnob = ({
   max = 100,
 }) => {
   const _value = clamp(min, max, value)
+  let text = Text({
+    text: value,
+    font: '12px Arial',
+    color: '#fff',
+    x: 50,
+    y: 55,
+    anchor: { x: 0.5, y: 0.5 },
+    textAlign: 'center',
+  })
   return createComponent({
     key,
     x,
@@ -21,7 +31,7 @@ const createKnob = ({
     max,
     width: width * 2,
     height: (height || width) * 2,
-    angle: clamp(0.3, 6, _value / 16),
+    angle: 0,
     value: _value,
     toJSON: function () {
       return {
@@ -33,18 +43,23 @@ const createKnob = ({
         max: this.max ? this.max : undefined,
       }
     },
-    onMove: function (event) {
-      if (!this.pointerDown || this.draggable) return
-      this.value = this.lastValue + (event.screenX - this.lastX) / 3
-      this.value = clamp(this.min, this.max, this.value)
-      this.angle = clamp(0.3, 6, this.value / 16)
-    },
     onDown: function (event) {
-      this.lastX = event.screenX
-      this.lastY = event.screenY
+      this.__lastX = event.screenX
       this.lastValue = this.value
     },
+    onMove: function (event) {
+      if (!this.pointerDown || this.draggable) return
+      const diff = this.max - this.min
+      const offset = 1000 / diff
+      this.value = this.lastValue - (this.__lastX - event.screenX) / offset
+      this.value = clamp(this.min, this.max, this.value)
+      text.text = Math.floor(this.value)
+    },
     render: function () {
+      window.debug && text.render()
+      const percent = (this.value - this.min) / (this.max - this.min)
+      this.angle = -0.3 + 5.7 * -percent
+
       this.context.strokeStyle = this.draggable ? 'gray' : 'white'
       this.context.fillStyle = this.draggable ? 'gray' : 'white'
       this.context.lineWidth = width / 20

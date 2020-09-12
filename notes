@@ -1,9 +1,38 @@
-LEVEL IDEAS:
-  have many knobs connected to many screens, where their value effects each gridScreen differently
-    you have to find the values that satisfy all of the screens
+Should show clues when beating levels
 
-  morse code
+timer idea
+  you must enter a combination into a number screen via buttons
+  but there is a timer counting down
+  you don't have enough time to enter the combination unless you disable the timer
+  you must disable the timer by TODO: interesting puzzle
 
-  gridScreen with active number and goal number
+sound idea
+  levels 1 through 4 should have morse sounds which map to letters
+  use as code in next level
 
+hint to combination on lock in other level
+
+must press buttons in specific order
+
+must move dot through maze
+  one knob controls x, other knob controls y, button activates movement
+
+
+Idea 39: Provide a set of dots within which a shape or code can be found.
+
+Idea 40: Give players a set of symbols that can be combined to create a word or a number.
+
+Idea 41: Attach items to a wire board and require players to connect those that create a pattern.
+Make the answer to a riddle a clue that players need to complete a task.
+
+Enigma style cipher puzzle
+
+Play a melody that players must repeat using a mini-piano.
+Give players a message in Morse code.
+
+Idea 46: Play a sequence of sounds (animal sounds, rhythms, tones) and require recognition of the sequence to solve another puzzle.
+
+
+clue is location + time
+need to set clock to that time
   

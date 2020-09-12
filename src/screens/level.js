@@ -12,7 +12,8 @@ const textParams = {
 }
 
 export const createLevel = (index = 0, startNextLevel, startPrevLevel) => {
-  const { connections, components } = LEVELS[index]
+  const level = LEVELS[index]
+  const { connections, components } = level
 
   const space = createSpace()
 
@@ -25,26 +26,46 @@ export const createLevel = (index = 0, startNextLevel, startPrevLevel) => {
   const levelEditorSystem = createLevelEditorSystem(space)
   space.addSystem(levelEditorSystem)
 
-  space.prevLevelButton = Button({
-    x: 70,
-    y: 750,
-    text: { ...textParams, text: 'Prev' },
-    onDown() {
-      startPrevLevel()
-    },
-  })
+  const saveLevel = () => {
+    space.entities.forEach((e) => {
+      const levelComponentIndex = LEVELS[index].components.findIndex(
+        (l) => l.key === e.key,
+      )
+      if (levelComponentIndex !== -1) {
+        const item = LEVELS[index].components[levelComponentIndex]
+        LEVELS[index].components[levelComponentIndex] = {
+          ...item,
+          value: e.value,
+          isValid: !!e.isValid,
+        }
+      }
+    })
+  }
+
+  if (index > 0) {
+    space.prevLevelButton = Button({
+      x: 70,
+      y: 750,
+      text: { ...textParams, text: 'Prev' },
+      onDown() {
+        saveLevel()
+        startPrevLevel()
+      },
+    })
+
+    space.prevLevelButton.key = 'prevLevelButton'
+    space.addEntity(space.prevLevelButton)
+  }
 
   space.nextLevelButton = Button({
     x: 1300,
     y: 750,
     text: { ...textParams, text: 'Next' },
     onDown() {
+      saveLevel()
       startNextLevel()
     },
   })
-
-  space.prevLevelButton.key = 'prevLevelButton'
-  space.addEntity(space.prevLevelButton)
 
   space.nextLevelButton.key = 'nextLevelButton'
   space.addEntity(space.nextLevelButton)

@@ -1,22 +1,46 @@
 import { createComponent } from './index'
 import { between, nearest } from '../utils'
+import { createLedSprite, createGlow, clamp } from '../led'
+import { Text } from 'kontra'
 
 const DEFAULT_WIDTH = 500
 const DEFAULT_HEIGHT = 300
 const LINE_WIDTH = 5
 
-const createWaveScreen = ({ key, x, y, goal, width = 600, height = 300 }) => {
+const createWaveScreen = ({
+  key,
+  x,
+  y,
+  goal,
+  amplitude = 20,
+  wavelength = 9.5,
+  width = 600,
+  height = 300,
+}) => {
+  const led = createLedSprite()
+  const greenGlow = createGlow(0, 1, 0)
+  const redGlow = createGlow(1, 0, 0)
+  let text = Text({
+    text: 0,
+    font: '12px Arial',
+    color: '#fff',
+    x: 50,
+    y: 55,
+    anchor: { x: 0.5, y: 0.5 },
+    textAlign: 'center',
+  })
   return createComponent({
     key,
     x,
     y,
     width,
     height,
-    active: { wavelength: 9.5, amplitude: 90, color: '#ffffff' },
+    active: { wavelength, amplitude, color: '#ffffff' },
     goal: {
       wavelength: (goal && goal.wavelength) || between(0, 20) * 5,
       amplitude: (goal && goal.amplitude) || between(0, 20) * 5,
-      color: 'green',
+      color: 'white',
+      alpha: 0.1,
     },
     toJSON: function () {
       return {
@@ -27,28 +51,45 @@ const createWaveScreen = ({ key, x, y, goal, width = 600, height = 300 }) => {
           amplitude: this.goal.amplitude,
           wavelength: this.goal.wavelength,
         },
+        isValid: !!this.isValid,
+        amplitude: this.active.amplitude,
+        wavelength: this.active.wavelength,
         width: this.width,
         height: this.height,
       }
     },
     updateValue: function (key, value) {
-      if (key === 'wavelength' || key === 'amplitude')
-        this.active[key] = nearest(value, 5)
+      if (key === 'amplitude') {
+        this.active[key] = clamp(nearest(value, 5), 0, 100)
+      }
+      if (key === 'wavelength') {
+        this.active[key] = clamp(nearest(value, 5), 0, 100)
+      }
+      text.text = `${this.active.amplitude}, ${this.active.wavelength}`
       this.isValid =
         Math.floor(this.active.wavelength) ===
           Math.floor(this.goal.wavelength) &&
         Math.floor(this.active.amplitude) === Math.floor(this.goal.amplitude)
     },
     render: function () {
-      this.context.strokeStyle = this.isValid ? 'green' : 'white'
+      window.debug && text.render()
+      this.context.strokeStyle = 'white'
       this.context.lineWidth = LINE_WIDTH
       this.context.beginPath()
-      this.context.rect(0, 0, width + 9, height + 9)
+      this.context.rect(0, 30, width + 9, height + 9)
       this.context.stroke()
+      this.context.drawImage(led, this.width + 20, this.height + 20)
+      this.context.drawImage(
+        this.isValid ? greenGlow : redGlow,
+        this.width - 10,
+        this.height - 10,
+      )
 
       const lines = [this.active, this.goal]
 
       lines.forEach((line) => {
+        this.context.save()
+        this.context.globalAlpha = line.alpha || 1
         this.context.beginPath()
         const offset = -100 + height / 2 + 5
         var counter = 0,
@@ -72,6 +113,7 @@ const createWaveScreen = ({ key, x, y, goal, width = 600, height = 300 }) => {
         }
         this.context.strokeStyle = line.color
         this.context.stroke()
+        this.context.restore()
       })
     },
   })

@@ -54,7 +54,6 @@ export const createComponent = ({
         const diffY = event.offsetY - this.clickY
         this.x = this.lastX + diffX
         this.y = this.lastY + diffY
-        console.log(this.lastX, diffX)
       }
     },
     onUp: function (event) {

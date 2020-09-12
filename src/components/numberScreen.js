@@ -1,6 +1,7 @@
 import { createComponent } from './index'
 import { Text } from 'kontra'
 import { setKey } from '../utils'
+import { createLedSprite, createGlow } from '../led'
 
 const createNumberScreen = ({ key, x, y, goal, value = 0 }) => {
   let text = Text({
@@ -12,6 +13,9 @@ const createNumberScreen = ({ key, x, y, goal, value = 0 }) => {
     anchor: { x: 0.5, y: 0.5 },
     textAlign: 'center',
   })
+  const led = createLedSprite()
+  const greenGlow = createGlow(0, 1, 0)
+  const redGlow = createGlow(1, 0, 0)
   return createComponent({
     key,
     x,
@@ -25,6 +29,7 @@ const createNumberScreen = ({ key, x, y, goal, value = 0 }) => {
         key: this.key,
         x: Math.floor(this.x),
         y: Math.floor(this.y),
+        isValid: !!this.isValid,
         value,
         goal: { x: this.goal.x, y: this.goal.y },
       }
@@ -37,7 +42,13 @@ const createNumberScreen = ({ key, x, y, goal, value = 0 }) => {
       }
     },
     render: function () {
-      this.context.strokeStyle = this.isValid ? 'green' : 'white'
+      this.context.strokeStyle = 'white'
+      this.context.drawImage(led, this.width + 20, this.height + 20)
+      this.context.drawImage(
+        this.isValid ? greenGlow : redGlow,
+        this.width - 10,
+        this.height - 10,
+      )
       this.context.lineWidth = 4
       this.context.beginPath()
       this.context.rect(0, 0, this.width + 9, this.height + 9)
