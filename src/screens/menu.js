@@ -5,13 +5,13 @@ export const createMenu = (onDown) => {
     text: 'The Machine',
     font: '68px Arial',
     color: '#333',
-    x: 400,
+    x: 708,
     y: 200,
     anchor: { x: 0.5, y: 0.5 },
     textAlign: 'center',
   })
   let button = Button({
-    x: 350,
+    x: 650,
     y: 550,
 
     text: {

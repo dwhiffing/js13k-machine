@@ -13,7 +13,7 @@ initPointer()
 
 let levelIndex = -1
 let level
-let muted = false
+let muted = true
 window.playSound = (sound) => !muted && zzfx(...sound)
 window.toggleMute = () => (muted = !muted)
 

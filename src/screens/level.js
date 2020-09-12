@@ -27,7 +27,7 @@ export const createLevel = (index = 0, startNextLevel, startPrevLevel) => {
 
   space.prevLevelButton = Button({
     x: 70,
-    y: 650,
+    y: 750,
     text: { ...textParams, text: 'Prev' },
     onDown() {
       startPrevLevel()
@@ -35,8 +35,8 @@ export const createLevel = (index = 0, startNextLevel, startPrevLevel) => {
   })
 
   space.nextLevelButton = Button({
-    x: 670,
-    y: 650,
+    x: 1300,
+    y: 750,
     text: { ...textParams, text: 'Next' },
     onDown() {
       startNextLevel()

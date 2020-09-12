@@ -2,18 +2,18 @@
 export const LEVELS = [
   {
     components: [
-      { key: 'toggle-1', x: 73, y: 316, value: 6, max: 6 },
-      { key: 'toggle-2', x: 189, y: 316, max: 12 },
-      { key: 'toggle-3', x: 74, y: 417, max: 24 },
-      { key: 'toggle-4', x: 189, y: 423, value: 48, max: 48 },
-      { key: 'toggle-5', x: 71, y: 100, max: 6 },
-      { key: 'toggle-6', x: 188, y: 97, value: 12, max: 12 },
-      { key: 'toggle-7', x: 72, y: 208, max: 24 },
-      { key: 'toggle-8', x: 187, y: 201, max: 48 },
+      { key: 'toggle-1', x: 1012, y: 168, value: 6, max: 6 },
+      { key: 'toggle-2', x: 421, y: 173, max: 12 },
+      { key: 'toggle-3', x: 1012, y: 273, max: 24 },
+      { key: 'toggle-4', x: 419, y: 279, value: 48, max: 48 },
+      { key: 'toggle-5', x: 1012, y: 384, max: 6 },
+      { key: 'toggle-6', x: 420, y: 393, value: 12, max: 12 },
+      { key: 'toggle-7', x: 1011, y: 507, max: 24 },
+      { key: 'toggle-8', x: 417, y: 506, max: 48 },
       {
         key: 'gridScreen-1',
-        x: 337,
-        y: 80,
+        x: 535,
+        y: 164,
         goal: { x: 58, y: 40 },
         width: 400,
         height: 400,

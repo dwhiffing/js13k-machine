@@ -23,6 +23,10 @@ export const createComponent = ({
     key,
     x,
     y,
+    lastX: 0,
+    lastY: 0,
+    clickX: 0,
+    clickY: 0,
     width,
     height,
     value,
@@ -46,8 +50,11 @@ export const createComponent = ({
       if (!this.pointerDown) return
 
       if (this.draggable) {
-        this.x = event.offsetX - width / 2
-        this.y = event.offsetY - height / 2
+        const diffX = event.offsetX - this.clickX
+        const diffY = event.offsetY - this.clickY
+        this.x = this.lastX + diffX
+        this.y = this.lastY + diffY
+        console.log(this.lastX, diffX)
       }
     },
     onUp: function (event) {
@@ -57,6 +64,10 @@ export const createComponent = ({
     onDown: function (event) {
       onDown && onDown.call(this, event)
       this.pointerDown = true
+      this.lastX = this.x
+      this.lastY = this.y
+      this.clickX = event.offsetX
+      this.clickY = event.offsetY
     },
   })
 }

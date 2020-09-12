@@ -22,7 +22,9 @@ const createLevelEditorSystem = (space, x, y) => {
     type: 'button',
     label: 'Copy level',
     action: () => {
-      const components = space.entities.map((e) => e.toJSON())
+      const components = space.entities
+        .filter((e) => e.toJSON)
+        .map((e) => e.toJSON())
       navigator.clipboard.writeText(
         JSON.stringify({
           components,
