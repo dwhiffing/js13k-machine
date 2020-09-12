@@ -15,13 +15,15 @@ let levelIndex = -1
 let level
 const INITIAL_LEVELS = JSON.parse(JSON.stringify(LEVELS))
 let muted = true
+let musicPlaying = false
 window.playSound = (sound) => !muted && zzfx(...sound)
 window.toggleMute = () => (muted = !muted)
 window.debug = false
 
 const startLevel = () => {
   level && level.shutdown()
-  if (levelIndex === -1 && !muted) {
+  if (levelIndex === 0 && !muted && !musicPlaying) {
+    musicPlaying = true
     let music = zzfxP(...zzfxM(...MUSIC[0]))
     music.loop = true
   }
@@ -43,7 +45,9 @@ const startLevel = () => {
     })
   } else {
     level = createLevel(levelIndex, startNextLevel, startPrevLevel)
-    levelIndex > 0 && playSound(LEVEL_SOUND)
+
+    // TODO: new sound for this
+    // levelIndex > 0 && playSound(LEVEL_SOUND)
   }
 }
 

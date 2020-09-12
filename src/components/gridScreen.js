@@ -1,6 +1,7 @@
 import { createComponent } from './index'
 import { between } from '../utils'
 import { clamp } from 'kontra'
+import { WIN_SOUND } from '../data'
 import { createLedSprite, createGlow } from '../led'
 const LINE_WIDTH = 5
 
@@ -8,11 +9,14 @@ const createGridScreen = ({
   key,
   x,
   y,
+  isValid,
+  value,
   goal,
   width = 400,
   height = 400,
   resolution = 40,
 }) => {
+  console.log(isValid)
   const led = createLedSprite()
   const greenGlow = createGlow(0, 1, 0)
   const redGlow = createGlow(1, 0, 0)
@@ -22,8 +26,9 @@ const createGridScreen = ({
     y,
     width,
     height,
+    isValid,
     resolution,
-    active: { x: 0, y: 0, color: '#ffffff' },
+    value: value || { x: 0, y: 0, color: '#ffffff' },
     goal: {
       x: (goal && goal.x) || between(0, 100),
       y: (goal && goal.y) || between(0, 100),
@@ -44,14 +49,16 @@ const createGridScreen = ({
     },
     updateValue: function (key, value) {
       if (key === 'x' || key === 'y') {
-        this.active[key] = Math.floor(value)
+        this.value[key] = Math.floor(value)
       } else if (key === 'resolution') {
         this[key] = value
       }
-      const activeCoords = this.getCoords(this.active)
+      const activeCoords = this.getCoords(this.value)
       const goalCoords = this.getCoords(this.goal)
-      this.isValid =
+      const newValid =
         activeCoords.x === goalCoords.x && activeCoords.y === goalCoords.y
+      if (this.isValid !== newValid && newValid) playSound(WIN_SOUND)
+      this.isValid = newValid
     },
     render: function () {
       this.context.strokeStyle = 'white'
@@ -66,7 +73,7 @@ const createGridScreen = ({
         this.height - 10,
       )
 
-      const dots = [this.goal, this.active]
+      const dots = [this.goal, this.value]
 
       dots.forEach((dot) => {
         const coords = this.getCoords(dot)

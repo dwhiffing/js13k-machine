@@ -16,6 +16,7 @@ export const createLevel = (index = 0, startNextLevel, startPrevLevel) => {
   const { connections, components } = level
 
   const space = createSpace()
+  space.index = index
 
   const componentSystem = createComponentSystem(space)
   space.addSystem(componentSystem)

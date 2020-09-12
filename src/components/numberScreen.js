@@ -1,9 +1,10 @@
 import { createComponent } from './index'
 import { Text } from 'kontra'
+import { WIN_SOUND } from '../data'
 import { setKey } from '../utils'
 import { createLedSprite, createGlow } from '../led'
 
-const createNumberScreen = ({ key, x, y, goal, value = 0 }) => {
+const createNumberScreen = ({ key, x, y, goal, value, isValid }) => {
   let text = Text({
     text: value,
     font: '52px Arial',
@@ -22,7 +23,8 @@ const createNumberScreen = ({ key, x, y, goal, value = 0 }) => {
     y,
     width: 200,
     height: 150,
-    value: [0, 0, 0],
+    value: value || [0, 0, 0],
+    isValid,
     goal: [1, 2, 3],
     toJSON: function () {
       return {
@@ -37,9 +39,9 @@ const createNumberScreen = ({ key, x, y, goal, value = 0 }) => {
     updateValue: function (key, value) {
       setKey(key, Math.floor(value / 11), this)
       text.text = this.value.reduce((result, n) => `${result}${n}`)
-      if (this.value.every((v, i) => this.goal[i] === v)) {
-        this.isValid = true
-      }
+      const newValid = this.value.every((v, i) => this.goal[i] === v)
+      if (this.isValid !== newValid && newValid) playSound(WIN_SOUND)
+      this.isValid = newValid
     },
     render: function () {
       this.context.strokeStyle = 'white'

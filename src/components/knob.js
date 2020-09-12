@@ -1,6 +1,8 @@
 import { createComponent } from './index'
 import { Text } from 'kontra'
 import { clamp } from 'kontra'
+import { CLICK_SOUND } from '../data'
+import { nearest } from '../utils'
 
 const arrowWidth = 0.2
 const createKnob = ({
@@ -51,8 +53,34 @@ const createKnob = ({
       if (!this.pointerDown || this.draggable) return
       const diff = this.max - this.min
       const offset = 1000 / diff
-      this.value = this.lastValue - (this.__lastX - event.screenX) / offset
-      this.value = clamp(this.min, this.max, this.value)
+      let newValue = this.lastValue - (this.__lastX - event.screenX) / offset
+      newValue = clamp(this.min, this.max, newValue)
+      if (
+        nearest(Math.floor(newValue), 5) !== nearest(Math.floor(this.value), 5)
+      ) {
+        playSound([
+          ,
+          ,
+          167,
+          ,
+          ,
+          0.08,
+          ,
+          2.96,
+          ,
+          ,
+          171,
+          0.35,
+          ,
+          0.1,
+          -5,
+          ,
+          ,
+          0.1,
+          0.03,
+        ])
+      }
+      this.value = newValue
       text.text = Math.floor(this.value)
     },
     render: function () {

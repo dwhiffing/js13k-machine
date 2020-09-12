@@ -132,7 +132,7 @@ export const LEVELS = [
       { key: 'knob-1', x: 492, y: 482, max: 100 },
       { key: 'knob-2', x: 667, y: 482, max: 100 },
       { key: 'knob-3', x: 841, y: 479, max: 100 },
-      { key: 'numberScreen-1', x: 601, y: 225, value: 456, goal: {} },
+      { key: 'numberScreen-1', x: 601, y: 225, value: [0, 0, 0], goal: {} },
     ],
     connections: [
       'knob-1.value:numberScreen-1.value.0',

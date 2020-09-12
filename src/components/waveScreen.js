@@ -1,5 +1,6 @@
 import { createComponent } from './index'
 import { between, nearest } from '../utils'
+import { WIN_SOUND } from '../data'
 import { createLedSprite, createGlow, clamp } from '../led'
 import { Text } from 'kontra'
 
@@ -14,6 +15,7 @@ const createWaveScreen = ({
   goal,
   amplitude = 20,
   wavelength = 9.5,
+  isValid,
   width = 600,
   height = 300,
 }) => {
@@ -35,6 +37,7 @@ const createWaveScreen = ({
     y,
     width,
     height,
+    isValid,
     active: { wavelength, amplitude, color: '#ffffff' },
     goal: {
       wavelength: (goal && goal.wavelength) || between(0, 20) * 5,
@@ -66,10 +69,14 @@ const createWaveScreen = ({
         this.active[key] = clamp(nearest(value, 5), 0, 100)
       }
       text.text = `${this.active.amplitude}, ${this.active.wavelength}`
-      this.isValid =
+      const newValid =
         Math.floor(this.active.wavelength) ===
           Math.floor(this.goal.wavelength) &&
         Math.floor(this.active.amplitude) === Math.floor(this.goal.amplitude)
+
+      if (this.isValid !== newValid && newValid) playSound(WIN_SOUND)
+
+      this.isValid = newValid
     },
     render: function () {
       window.debug && text.render()
