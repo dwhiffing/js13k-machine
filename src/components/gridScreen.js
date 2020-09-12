@@ -2,6 +2,7 @@ import { createComponent } from './index'
 import { between } from '../utils'
 import { clamp } from 'kontra'
 import { WIN_SOUND } from '../data'
+import { createLedSprite, createGlow } from '../led'
 const LINE_WIDTH = 5
 
 const createGridScreen = ({
@@ -13,6 +14,9 @@ const createGridScreen = ({
   height = 400,
   resolution = 40,
 }) => {
+  const led = createLedSprite()
+  const greenGlow = createGlow(0, 1, 0)
+  const redGlow = createGlow(1, 0, 0)
   return createComponent({
     key,
     x,
@@ -49,11 +53,17 @@ const createGridScreen = ({
         activeCoords.x === goalCoords.x && activeCoords.y === goalCoords.y
     },
     render: function () {
-      this.context.strokeStyle = this.isValid ? 'green' : 'white'
+      this.context.strokeStyle = 'white'
       this.context.lineWidth = LINE_WIDTH
       this.context.beginPath()
       this.context.rect(0, 0, width + 9, height + 9)
       this.context.stroke()
+      this.context.drawImage(led, this.width + 20, this.height + 20)
+      this.context.drawImage(
+        this.isValid ? greenGlow : redGlow,
+        this.width - 10,
+        this.height - 10,
+      )
 
       const dots = [this.goal, this.active]
 
