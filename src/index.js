@@ -15,7 +15,7 @@ let levelIndex = -1
 let level
 const INITIAL_LEVELS = JSON.parse(JSON.stringify(LEVELS))
 let muted = false
-let musicPlaying = true
+let musicPlaying = false
 window.playSound = (sound) => !muted && zzfx(...sound)
 window.toggleMute = () => (muted = !muted)
 
