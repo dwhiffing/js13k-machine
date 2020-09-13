@@ -2,7 +2,6 @@ import { createComponent } from './index'
 import { between, nearest } from '../utils'
 import { WIN_SOUND } from '../data'
 import { createLedSprite, createGlow, clamp } from '../led'
-import { Text } from 'kontra'
 
 const DEFAULT_WIDTH = 500
 const DEFAULT_HEIGHT = 300
@@ -22,15 +21,6 @@ const createWaveScreen = ({
   const led = createLedSprite()
   const greenGlow = createGlow(0, 1, 0, 160)
   const redGlow = createGlow(1, 0, 0, 80)
-  let text = Text({
-    text: 0,
-    font: '12px Arial',
-    color: '#fff',
-    x: 50,
-    y: 55,
-    anchor: { x: 0.5, y: 0.5 },
-    textAlign: 'center',
-  })
   return createComponent({
     key,
     x,
@@ -68,7 +58,6 @@ const createWaveScreen = ({
       if (key === 'wavelength') {
         this.active[key] = clamp(nearest(value, 5), 0, 100)
       }
-      text.text = `${this.active.amplitude}, ${this.active.wavelength}`
       const newValid =
         Math.floor(this.active.wavelength) ===
           Math.floor(this.goal.wavelength) &&
@@ -79,7 +68,6 @@ const createWaveScreen = ({
       this.isValid = newValid
     },
     render: function () {
-      window.debug && text.render()
       this.context.lineWidth = LINE_WIDTH * 2
       this.context.beginPath()
       this.context.strokeStyle = '#444'

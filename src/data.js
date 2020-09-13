@@ -121,40 +121,87 @@ export const LEVELS = [
 
   {
     components: [
+      { key: 'toggle-1', x: 1100, y: 431, max: 1 },
+      { key: 'speaker-1', x: 213, y: 67, max: 100 },
+      { key: 'toggle-2', x: 1245, y: 288, max: 2 },
+      { key: 'speaker-2', x: 325, y: 70, max: 100 },
+      { key: 'toggle-3', x: 395, y: 282, max: 3 },
+      { key: 'speaker-3', x: 442, y: 70, max: 100 },
+      { key: 'toggle-4', x: 275, y: 425, max: 4 },
+      { key: 'speaker-4', x: 559, y: 71, max: 100 },
+      { key: 'toggle-5', x: 394, y: 577, max: 5 },
+      { key: 'speaker-5', x: 678, y: 71, max: 100 },
+      { key: 'toggle-6', x: 1239, y: 595, max: 6 },
+      { key: 'speaker-6', x: 797, y: 73, max: 100 },
+      { key: 'toggle-7', x: 974, y: 601, max: 7 },
+      { key: 'speaker-7', x: 917, y: 77, max: 100 },
+      { key: 'toggle-8', x: 272, y: 290, max: 8 },
+      { key: 'speaker-8', x: 1047, y: 76, max: 100 },
+      { key: 'toggle-9', x: 969, y: 292, max: 9 },
+      { key: 'speaker-9', x: 1173, y: 74, max: 100 },
+      {
+        key: 'gridScreen-1',
+        x: 520,
+        y: 276,
+        goal: { x: 30, y: 80 },
+        width: 400,
+        height: 400,
+        resolution: 40,
+      },
+      { key: 'toggle-10', x: 1100, y: 288, max: 10 },
+      { key: 'toggle-11', x: 978, y: 433, max: 10 },
+      { key: 'toggle-12', x: 1246, y: 424, max: 20 },
+      { key: 'toggle-13', x: 1104, y: 598, max: 30 },
+      { key: 'toggle-14', x: 396, y: 425, max: 10 },
+      { key: 'toggle-15', x: 154, y: 290, max: 10 },
+      { key: 'toggle-16', x: 155, y: 429, max: 20 },
+      { key: 'toggle-17', x: 158, y: 570, max: 20 },
+      { key: 'toggle-18', x: 278, y: 573, max: 30 },
     ],
     connections: [
+      'toggle-1.value:speaker-1.value',
+      'toggle-2.value:speaker-2.value',
+      'toggle-3.value:speaker-3.value',
+      'toggle-4.value:speaker-4.value',
+      'toggle-5.value:speaker-5.value',
+      'toggle-6.value:speaker-6.value',
+      'toggle-7.value:speaker-7.value',
+      'toggle-8.value:speaker-8.value',
+      'toggle-9.value:speaker-9.value',
+      'toggle-10.value:gridScreen-1.x',
+      'toggle-11.value:gridScreen-1.x',
+      'toggle-12.value:gridScreen-1.x',
+      'toggle-13.value:gridScreen-1.x',
+      'toggle-14.value:gridScreen-1.y',
+      'toggle-15.value:gridScreen-1.y',
+      'toggle-16.value:gridScreen-1.y',
+      'toggle-17.value:gridScreen-1.y',
+      'toggle-18.value:gridScreen-1.y',
     ],
   },
-
   {
     components: [
+      { key: 'toggle-1', x: 498, y: 284, max: 3 },
+      { key: 'speaker-1', x: 479, y: 107, max: 100 },
+      { key: 'toggle-2', x: 664, y: 281, max: 9 },
+      { key: 'speaker-2', x: 656, y: 106, max: 100 },
+      { key: 'toggle-3', x: 851, y: 291, max: 2 },
+      { key: 'speaker-3', x: 838, y: 112, max: 100 },
+      {
+        key: 'numberScreen-1',
+        x: 605,
+        y: 399,
+        value: [0, 0, 0],
+        goal: [3,9,2],
+      },
+      { key: 'knob-1', x: 488, y: 638, max: 100 },
+      { key: 'knob-2', x: 654, y: 639, max: 100 },
+      { key: 'knob-3', x: 834, y: 643, max: 100 },
     ],
     connections: [
-    ],
-  },
-
-  {
-    components: [
-    ],
-    connections: [
-    ],
-  },
-
-  {
-    components: [
-    ],
-    connections: [
-    ],
-  },
-
-  {
-    components: [
-      { key: 'knob-1', x: 492, y: 482, max: 100 },
-      { key: 'knob-2', x: 667, y: 482, max: 100 },
-      { key: 'knob-3', x: 841, y: 479, max: 100 },
-      { key: 'numberScreen-1', x: 601, y: 225, value: [0, 0, 0], goal: {} },
-    ],
-    connections: [
+      'toggle-1.value:speaker-1.value',
+      'toggle-2.value:speaker-2.value',
+      'toggle-3.value:speaker-3.value',
       'knob-1.value:numberScreen-1.value.0',
       'knob-2.value:numberScreen-1.value.1',
       'knob-3.value:numberScreen-1.value.2',

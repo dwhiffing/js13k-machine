@@ -4,6 +4,7 @@ export { default as gridScreen } from './gridScreen'
 export { default as waveScreen } from './waveScreen'
 export { default as numberScreen } from './numberScreen'
 export { default as toggle } from './toggle'
+export { default as speaker } from './speaker'
 
 export const createComponent = ({
   key,
@@ -31,7 +32,7 @@ export const createComponent = ({
     height,
     value,
     render: function () {
-      if (window.debug && this.draggable) {
+      if (this.draggable) {
         this.context.fillStyle = '#fff'
         this.context.fillText(this.key, 0, -10)
       }

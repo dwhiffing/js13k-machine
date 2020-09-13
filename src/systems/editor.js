@@ -16,7 +16,6 @@ const createLevelEditorSystem = (space, x, y) => {
     width: 300,
     root: document.getElementById('gui'),
   })
-  window.debug = true
   const addPanel = (opts) => components.push(gui.Register(opts))
   addPanel({
     type: 'button',

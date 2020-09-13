@@ -25,7 +25,7 @@ const createNumberScreen = ({ key, x, y, goal, value, isValid }) => {
     height: 150,
     value: value || [0, 0, 0],
     isValid,
-    goal: [1, 2, 3],
+    goal: goal || [1, 2, 3],
     toJSON: function () {
       return {
         key: this.key,

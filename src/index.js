@@ -14,11 +14,10 @@ initPointer()
 let levelIndex = -1
 let level
 const INITIAL_LEVELS = JSON.parse(JSON.stringify(LEVELS))
-let muted = true
-let musicPlaying = false
+let muted = false
+let musicPlaying = true
 window.playSound = (sound) => !muted && zzfx(...sound)
 window.toggleMute = () => (muted = !muted)
-window.debug = false
 
 CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
   if (w < 2 * r) r = w / 2
