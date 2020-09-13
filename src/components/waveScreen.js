@@ -20,8 +20,8 @@ const createWaveScreen = ({
   height = 300,
 }) => {
   const led = createLedSprite()
-  const greenGlow = createGlow(0, 1, 0)
-  const redGlow = createGlow(1, 0, 0)
+  const greenGlow = createGlow(0, 1, 0, 160)
+  const redGlow = createGlow(1, 0, 0, 80)
   let text = Text({
     text: 0,
     font: '12px Arial',
@@ -80,16 +80,18 @@ const createWaveScreen = ({
     },
     render: function () {
       window.debug && text.render()
-      this.context.strokeStyle = 'white'
-      this.context.lineWidth = LINE_WIDTH
+      this.context.lineWidth = LINE_WIDTH * 2
       this.context.beginPath()
-      this.context.rect(0, 30, width + 9, height + 9)
+      this.context.strokeStyle = '#444'
+      this.context.roundRect(0, 30, width + 9, height + 9, 20)
       this.context.stroke()
-      this.context.drawImage(led, this.width + 20, this.height + 20)
+      this.context.lineWidth = LINE_WIDTH
+      this.context.strokeStyle = 'white'
+      this.context.drawImage(led, this.width + 40, this.height + 40)
       this.context.drawImage(
         this.isValid ? greenGlow : redGlow,
-        this.width - 10,
-        this.height - 10,
+        this.width + (this.isValid ? -30 : 10),
+        this.height + (this.isValid ? -30 : 10),
       )
 
       const lines = [this.active, this.goal]

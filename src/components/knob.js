@@ -1,7 +1,7 @@
 import { createComponent } from './index'
 import { Text } from 'kontra'
 import { clamp } from 'kontra'
-import { CLICK_SOUND } from '../data'
+import { KNOB_SOUND } from '../data'
 import { nearest } from '../utils'
 
 const arrowWidth = 0.2
@@ -47,38 +47,22 @@ const createKnob = ({
     },
     onDown: function (event) {
       this.__lastX = event.screenX
+      this.__lastY = event.screenY
       this.lastValue = this.value
     },
     onMove: function (event) {
       if (!this.pointerDown || this.draggable) return
       const diff = this.max - this.min
+      const diffX = this.__lastX - event.screenX
+      const diffY = this.__lastY - event.screenY
       const offset = 1000 / diff
-      let newValue = this.lastValue - (this.__lastX - event.screenX) / offset
+      const valueDiff = Math.abs(diffX) > Math.abs(diffY) ? diffX : diffY
+      let newValue = this.lastValue - valueDiff / offset
       newValue = clamp(this.min, this.max, newValue)
       if (
         nearest(Math.floor(newValue), 5) !== nearest(Math.floor(this.value), 5)
       ) {
-        playSound([
-          ,
-          ,
-          167,
-          ,
-          ,
-          0.08,
-          ,
-          2.96,
-          ,
-          ,
-          171,
-          0.35,
-          ,
-          0.1,
-          -5,
-          ,
-          ,
-          0.1,
-          0.03,
-        ])
+        playSound(KNOB_SOUND)
       }
       this.value = newValue
       text.text = Math.floor(this.value)
@@ -88,12 +72,13 @@ const createKnob = ({
       const percent = (this.value - this.min) / (this.max - this.min)
       this.angle = -0.3 + 5.7 * -percent
 
-      this.context.strokeStyle = this.draggable ? 'gray' : 'white'
-      this.context.fillStyle = this.draggable ? 'gray' : 'white'
+      this.context.strokeStyle = '#999'
+      this.context.fillStyle = '#999'
       this.context.lineWidth = width / 20
       this.context.translate(width, width)
       this.context.rotate(this.angle)
       this.context.translate(-width, -width)
+      this.context.strokeStyle = '#fff'
 
       this.context.beginPath()
       this.context.arc(width, width, width, 0, 2 * Math.PI)

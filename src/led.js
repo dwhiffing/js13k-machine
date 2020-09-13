@@ -92,12 +92,12 @@ export const createLedSprite = () =>
     return addCol(addCol(innerShadow, ledGlass), ledGlassReflection)
   })
 
-export const createGlow = (r, g, b) =>
-  generateImage(80, 80, (v) => {
+export const createGlow = (r, g, b, size) =>
+  generateImage(size, size, (v) => {
     const cv = subV(v, halfV)
     const d = 1 - lenV(cv) * 2
     const result = mixCol(newCol(r, g, b), white, smoothstep(0.6, 0.89, d))
 
-    const a = smoothstep(0.0, 1, d)
+    const a = smoothstep(0, 1, d)
     return newCol(result.r, result.g, result.b, a * a * a)
   })

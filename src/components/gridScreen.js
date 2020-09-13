@@ -16,10 +16,9 @@ const createGridScreen = ({
   height = 400,
   resolution = 40,
 }) => {
-  console.log(isValid)
   const led = createLedSprite()
-  const greenGlow = createGlow(0, 1, 0)
-  const redGlow = createGlow(1, 0, 0)
+  const greenGlow = createGlow(0, 1, 0, 160)
+  const redGlow = createGlow(1, 0, 0, 80)
   return createComponent({
     key,
     x,
@@ -28,7 +27,7 @@ const createGridScreen = ({
     height,
     isValid,
     resolution,
-    value: value || { x: 0, y: 0, color: '#ffffff' },
+    value: value || { x: 0, y: 0, color: '#ffffff', alpha: 0.75 },
     goal: {
       x: (goal && goal.x) || between(0, 100),
       y: (goal && goal.y) || between(0, 100),
@@ -61,16 +60,19 @@ const createGridScreen = ({
       this.isValid = newValid
     },
     render: function () {
-      this.context.strokeStyle = 'white'
-      this.context.lineWidth = LINE_WIDTH
+      this.context.lineWidth = LINE_WIDTH * 2
       this.context.beginPath()
-      this.context.rect(0, 0, width + 9, height + 9)
+      this.context.strokeStyle = '#444'
+      this.context.roundRect(0, 0, width + 9, height + 9, 20)
       this.context.stroke()
+      this.context.lineWidth = LINE_WIDTH
+      this.context.strokeStyle = 'white'
+
       this.context.drawImage(led, this.width + 20, this.height + 20)
       this.context.drawImage(
         this.isValid ? greenGlow : redGlow,
-        this.width - 10,
-        this.height - 10,
+        this.width - (this.isValid ? 50 : 10),
+        this.height - (this.isValid ? 50 : 10),
       )
 
       const dots = [this.goal, this.value]
@@ -81,11 +83,12 @@ const createGridScreen = ({
         this.context.globalAlpha = dot.alpha || 1
         this.context.beginPath()
         this.context.fillStyle = dot.color
-        this.context.rect(
+        this.context.roundRect(
           coords.x * this.resolution + LINE_WIDTH,
           coords.y * this.resolution + LINE_WIDTH,
           this.resolution - 2,
           this.resolution - 2,
+          50,
         )
         this.context.fill()
         this.context.restore()

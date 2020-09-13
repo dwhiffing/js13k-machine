@@ -9,14 +9,14 @@ const createNumberScreen = ({ key, x, y, goal, value, isValid }) => {
     text: value,
     font: '52px Arial',
     color: '#fff',
-    x: 100,
+    x: 103,
     y: 55,
     anchor: { x: 0.5, y: 0.5 },
     textAlign: 'center',
   })
   const led = createLedSprite()
-  const greenGlow = createGlow(0, 1, 0)
-  const redGlow = createGlow(1, 0, 0)
+  const greenGlow = createGlow(0, 1, 0, 160)
+  const redGlow = createGlow(1, 0, 0, 80)
   return createComponent({
     key,
     x,
@@ -38,7 +38,7 @@ const createNumberScreen = ({ key, x, y, goal, value, isValid }) => {
     },
     updateValue: function (key, value) {
       setKey(key, Math.floor(value / 11), this)
-      text.text = this.value.reduce((result, n) => `${result}${n}`)
+      text.text = this.value.reduce((result, n) => `${result} ${n}`)
       const newValid = this.value.every((v, i) => this.goal[i] === v)
       if (this.isValid !== newValid && newValid) playSound(WIN_SOUND)
       this.isValid = newValid
@@ -48,12 +48,14 @@ const createNumberScreen = ({ key, x, y, goal, value, isValid }) => {
       this.context.drawImage(led, this.width + 20, this.height + 20)
       this.context.drawImage(
         this.isValid ? greenGlow : redGlow,
-        this.width - 10,
-        this.height - 10,
+        this.width - (this.isValid ? 50 : 10),
+        this.height - (this.isValid ? 50 : 10),
       )
-      this.context.lineWidth = 4
+
+      this.context.lineWidth = 8
       this.context.beginPath()
-      this.context.rect(0, 0, this.width + 9, this.height + 9)
+      this.context.strokeStyle = '#444'
+      this.context.roundRect(0, 0, this.width + 9, this.height + 9, 20)
       this.context.stroke()
 
       text.render()
