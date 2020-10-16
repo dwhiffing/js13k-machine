@@ -55,6 +55,7 @@ export const createLevel = (index = 0, startNextLevel, startPrevLevel) => {
     })
 
     space.prevLevelButton.key = 'prevLevelButton'
+    space.prevLevelButton.type = 'component'
     space.addEntity(space.prevLevelButton)
   }
 
@@ -69,15 +70,16 @@ export const createLevel = (index = 0, startNextLevel, startPrevLevel) => {
   })
 
   space.nextLevelButton.key = 'nextLevelButton'
+  space.nextLevelButton.type = 'component'
   space.addEntity(space.nextLevelButton)
 
   components.forEach((component) => {
     const type = component.key.split('-')[0]
-    space.createEntity(type, component)
+    space.createEntity('component', { ...component, type })
   })
 
-  connections.forEach((connectionString) => {
-    space.addConnection.call(space, connectionString)
+  connections.forEach((connection) => {
+    space.createEntity('connection', { connection })
   })
 
   return {

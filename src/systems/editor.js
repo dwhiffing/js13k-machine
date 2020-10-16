@@ -27,10 +27,12 @@ const createLevelEditorSystem = (space, x, y) => {
       navigator.clipboard.writeText(
         JSON.stringify({
           components,
-          connections: space.connections.map(
-            (c) =>
-              `${c.input.key}.${c.input.prop}:${c.output.key}.${c.output.prop}`,
-          ),
+          connections: space.entities
+            .filter((e) => e.type === 'connection')
+            .map(
+              (c) =>
+                `${c.input.key}.${c.input.prop}:${c.output.key}.${c.output.prop}`,
+            ),
         }),
       )
     },
@@ -44,23 +46,35 @@ const createLevelEditorSystem = (space, x, y) => {
     if (!enabled) return
     let entity
     if (e.key === '1') {
-      entity = space.createEntity('knob', { x: 300, y: 300 })
+      entity = space.createEntity('component', { type: 'knob', x: 300, y: 300 })
     }
     if (e.key === '2') {
-      entity = space.createEntity('toggle', { x: 300, y: 300 })
+      entity = space.createEntity('component', {
+        type: 'toggle',
+        x: 300,
+        y: 300,
+      })
     }
     if (e.key === '3') {
-      entity = space.createEntity('gridScreen', { x: 300, y: 300 })
+      entity = space.createEntity('component', {
+        type: 'gridScreen',
+        x: 300,
+        y: 300,
+      })
     }
     if (e.key === '4') {
-      entity = space.createEntity('waveScreen', { x: 300, y: 300 })
+      entity = space.createEntity('component', {
+        type: 'waveScreen',
+        x: 300,
+        y: 300,
+      })
     }
     if (e.key === '0') {
       const connectionString = window.prompt(
         'Enter new connection',
         'knob-1.value:gridScreen-1.x',
       )
-      space.addConnection(connectionString)
+      space.addEntity(connectionString)
     }
     if (entity) {
       entity.draggable = true
@@ -72,94 +86,95 @@ const createLevelEditorSystem = (space, x, y) => {
 
   return {
     addEntity: (entity) => {
-      const minMax = ['min', 'max']
-      const coords = ['x', 'y']
-      const screens = ['active', 'goal']
+      if (type === 'component') {
+        const minMax = ['min', 'max']
+        const coords = ['x', 'y']
+        const screens = ['active', 'goal']
 
-      addPanel({
-        type: 'folder',
-        label: entity.key,
-        open: false,
-      })
-
-      coords.forEach((key) => {
-        if (typeof entity[key] !== 'number') return
         addPanel({
-          type: 'range',
-          label: key,
-          property: key,
-          min: 0,
-          max: 1000,
-          folder: entity.key,
-          object: entity,
-        })
-      })
-
-      entity.value &&
-        addPanel({
-          type: 'display',
-          label: 'value',
-          property: 'value',
-          folder: entity.key,
-          object: entity,
+          type: 'folder',
+          label: entity.key,
+          open: false,
         })
 
-      minMax.forEach((key) => {
-        if (typeof entity[key] !== 'number') return
-        addPanel({
-          type: 'range',
-          label: key,
-          property: key,
-          folder: entity.key,
-          object: entity,
-        })
-      })
-
-      screens.forEach((screenKey) => {
-        if (!entity[screenKey]) return
-        Object.keys(entity[screenKey]).forEach((key) => {
+        coords.forEach((key) => {
+          if (typeof entity[key] !== 'number') return
           addPanel({
-            type: key.match(/^x$|^y$|amplitude|wavelength/)
-              ? 'range'
-              : key.match(/^color$/)
-              ? 'color'
-              : 'display',
-            label: `${screenKey}-${key}`,
+            type: 'range',
+            label: key,
             property: key,
+            min: 0,
+            max: 1000,
             folder: entity.key,
-            object: entity[screenKey],
+            object: entity,
           })
         })
-      })
-    },
-    addConnection: function (connection) {
-      const { input, output } = connection
-      addPanel({
-        type: 'folder',
-        label: `${input.key}-${output.key}`,
-        open: false,
-      })
-      addPanel({
-        type: 'text',
-        folder: `${input.key}-${output.key}`,
-        label: 'input.key',
-        object: input,
-        property: 'key',
-      })
-      addPanel({
-        type: 'text',
-        folder: `${input.key}-${output.key}`,
-        label: 'output.key',
-        object: output,
-        property: 'key',
-      })
-      addPanel({
-        type: 'text',
-        folder: `${input.key}-${output.key}`,
-        label: 'output.prop',
-        object: output,
-        property: 'prop',
-      })
+
+        entity.value &&
+          addPanel({
+            type: 'display',
+            label: 'value',
+            property: 'value',
+            folder: entity.key,
+            object: entity,
+          })
+
+        minMax.forEach((key) => {
+          if (typeof entity[key] !== 'number') return
+          addPanel({
+            type: 'range',
+            label: key,
+            property: key,
+            folder: entity.key,
+            object: entity,
+          })
+        })
+
+        screens.forEach((screenKey) => {
+          if (!entity[screenKey]) return
+          Object.keys(entity[screenKey]).forEach((key) => {
+            addPanel({
+              type: key.match(/^x$|^y$|amplitude|wavelength/)
+                ? 'range'
+                : key.match(/^color$/)
+                ? 'color'
+                : 'display',
+              label: `${screenKey}-${key}`,
+              property: key,
+              folder: entity.key,
+              object: entity[screenKey],
+            })
+          })
+        })
+      } else if (type === 'connection') {
+        const { input, output } = entity
+        addPanel({
+          type: 'folder',
+          label: `${input.key}-${output.key}`,
+          open: false,
+        })
+        addPanel({
+          type: 'text',
+          folder: `${input.key}-${output.key}`,
+          label: 'input.key',
+          object: input,
+          property: 'key',
+        })
+        addPanel({
+          type: 'text',
+          folder: `${input.key}-${output.key}`,
+          label: 'output.key',
+          object: output,
+          property: 'key',
+        })
+        addPanel({
+          type: 'text',
+          folder: `${input.key}-${output.key}`,
+          label: 'output.prop',
+          object: output,
+          property: 'prop',
+        })
+      }
     },
     update: (time) => {},
     render: (time) => {},

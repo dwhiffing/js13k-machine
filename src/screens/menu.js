@@ -20,14 +20,14 @@ export const createMenu = (onDown) => {
     textAlign: 'center',
   })
   let button = Button({
-    x: 610,
+    x: 600,
     y: 550,
 
     text: {
       text: 'Start Game',
       color: 'white',
       font: '40px Arial, sans-serif',
-      anchor: { x: 0.5, y: 0.5 },
+      anchor: { x: 0, y: 0.5 },
     },
     onDown() {
       onDown()

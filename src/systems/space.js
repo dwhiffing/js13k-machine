@@ -3,27 +3,20 @@ import * as componentFactories from '../components'
 const createSpace = () => {
   const systems = []
   const entities = []
-  const connections = []
 
-  const createEntity = function (type, opts) {
-    const id = entities.filter((e) => e.key.match(new RegExp(type))).length + 1
-    const entity = componentFactories[type]({
-      key: opts.key || `${type}-${id}`,
-      ...opts,
-    })
-    if (entity) {
-      this.addEntity(entity)
-      return entity
-    }
-  }
+  const createEntity = function (type = '', opts) {
+    let entity
+    if (type === 'component') {
+      const id =
+        entities.filter((e) => e.key.match(new RegExp(opts.type))).length + 1
+      entity = componentFactories[opts.type]({
+        key: opts.key || `${opts.type}-${id}`,
+        ...opts,
+      })
+    } else if (type === 'connection') {
+      const [input = '', output = ''] = opts.connection.split(':')
 
-  return {
-    createEntity,
-    connections,
-    addConnection: function (connectionString = '') {
-      const [input = '', output = ''] = connectionString.split(':')
-
-      const connection = {
+      entity = {
         input: {
           key: input.split('.')[0],
           prop: input.split('.').slice(1).join('.'),
@@ -33,11 +26,18 @@ const createSpace = () => {
           prop: output.split('.').slice(1).join('.'),
         },
       }
-      this.connections.push(connection)
-      systems.forEach((system) => {
-        system.addConnection && system.addConnection(connection)
-      })
-    },
+    }
+    if (entity) {
+      console.log(entity)
+      entity.type = type
+      this.addEntity(entity)
+      return entity
+    }
+  }
+
+  return {
+    createEntity,
+    entities,
     addSystem: function (system) {
       systems.push(system)
     },
@@ -56,7 +56,6 @@ const createSpace = () => {
     shutdown: function () {
       systems.forEach((system) => system.shutdown && system.shutdown())
     },
-    entities,
   }
 }
 
