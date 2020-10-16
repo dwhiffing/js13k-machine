@@ -28,7 +28,6 @@ const createSpace = () => {
       }
     }
     if (entity) {
-      console.log(entity)
       entity.type = type
       this.addEntity(entity)
       return entity
